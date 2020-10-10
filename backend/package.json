@@ -1,22 +1,28 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
-  "description": "Expense manager backend",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/revanthraghu/Expense-Manager.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/revanthraghu/Expense-Manager/issues"
-  },
-  "homepage": "https://github.com/revanthraghu/Expense-Manager#readme",
-  "dependencies": {
-    "express": "^4.17.1"
-  }
+ "name": "backend",
+ "version": "1.0.0",
+ "description": "node.js backend for expense manager app",
+ "main": "app.js",
+ "scripts": {
+  "test": "echo \"Error: no test specified\" && exit 1"
+ },
+ "repository": {
+  "type": "git",
+  "url": "git+https://github.com/revanthraghu/Expense-Manager.git"
+ },
+ "bugs": {
+  "url": "https://github.com/revanthraghu/Expense-Manager/issues"
+ },
+ "homepage": "https://github.com/revanthraghu/Expense-Manager#readme",
+ "author": "",
+ "license": "ISC",
+ "dependencies": {
+  "bcryptjs": "^2.4.3",
+  "cors": "^2.8.5",
+  "dotenv": "^8.2.0",
+  "express": "^4.17.1",
+  "joi": "^17.2.1",
+  "mongoose": "^5.10.8",
+  "nodemailer": "^6.4.13"
+ }
 }
