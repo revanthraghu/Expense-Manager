@@ -104,6 +104,9 @@ export default function Register() {
             Register
           </Button>
         </div>
+        <div>
+          
+        </div>
       </form>
     </>
   );

@@ -18,8 +18,10 @@ const useStyles = makeStyles({
   // NavBar
   export default function NavBar() {
     const classes = useStyles();
-    const [regLog, setRegLog] = useState("/");
     const history = useHistory();
+    const initialRegLog = history.location.pathname
+    // console.log(initialRegLog)
+    const [regLog, setRegLog] = useState(initialRegLog);
   
     const handleChange = (e, newregLog) => {
       setRegLog(newregLog);
