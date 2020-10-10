@@ -1,0 +1,22 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Expense manager backend",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/revanthraghu/Expense-Manager.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/revanthraghu/Expense-Manager/issues"
+  },
+  "homepage": "https://github.com/revanthraghu/Expense-Manager#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
