@@ -15,12 +15,3 @@ Content-Type: application/json
     "password": "123456"
 }
 ###
-POST http://localhost:5000/api/email
-Content-Type: application/json
-
-{
-    "to": "revabob@gmail.com",
-    "subject": "Test Email",
-    "body": "She sells sea shells on the sea shore"
-}
-###

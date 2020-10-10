@@ -51,7 +51,8 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 isLoading:false,
-                isError:true
+                isError:true,
+                errorMessage:''
             }
 
         default:

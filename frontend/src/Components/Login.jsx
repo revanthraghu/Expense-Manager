@@ -26,7 +26,8 @@ export default function Login() {
   };
 
   const [loginDetails, setLoginDetails] = useState(initialState);
-  const login = useSelector(state => state.login)
+  const login = useSelector(state => state.Auth.login)
+  console.log(login);
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
