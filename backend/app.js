@@ -33,5 +33,5 @@ mongoose.connect(
 app.use('/api', authRoute);
 
 app.listen(5000, () => {
- console.log('The database is live on port 5000');
+ console.log('The server is live on port 5000');
 });
