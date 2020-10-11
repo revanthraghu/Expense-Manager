@@ -30,8 +30,10 @@ export default function Login() {
   };
 
   const [loginDetails, setLoginDetails] = useState(initialState);
+
   const [transition, setTransition] = React.useState(undefined);
-  const {login,errMsg} = useSelector(state => state)
+  const {login,errMsg} = useSelector(state => state.Auth)
+
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
