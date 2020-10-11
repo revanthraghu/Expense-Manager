@@ -7,6 +7,7 @@ import EmailIcon from "@material-ui/icons/Email";
 import { useHistory } from "react-router-dom";
 import { postRegister } from "../Redux/actions";
 import NavBar from "./NavBar";
+import Snackbar from '@material-ui/core/Snackbar';
 
 const useStyles = makeStyles({
   root: {
@@ -15,6 +16,7 @@ const useStyles = makeStyles({
     marginLeft: "60%",
   },
 });
+
 
 // Registration Component
 export default function Register() {
@@ -29,6 +31,8 @@ export default function Register() {
   const [registerDetails, setRegisterDetails] = useState(initialState);
   const history = useHistory();
   const dispatch = useDispatch();
+  const errMsg = useSelector(state => state.errMsg)
+  console.log(errMsg);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -105,7 +109,7 @@ export default function Register() {
           </Button>
         </div>
         <div>
-          
+          {errMsg && <div>{errMsg}</div> }
         </div>
       </form>
     </>

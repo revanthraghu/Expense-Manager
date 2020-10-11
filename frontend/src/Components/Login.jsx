@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import TextField from "@material-ui/core/TextField";
+import {TextField, Snackbar,Slide} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import EmailIcon from "@material-ui/icons/Email";
 import NavBar from "./NavBar";
 import {postLogin} from '../Redux/actions'
 import { Redirect } from "react-router-dom";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,6 +17,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function TransitionDown(props) {
+  return <Slide {...props} direction="down" />;
+}
+
 export default function Login() {
   const classes = useStyles();
 
@@ -26,8 +30,10 @@ export default function Login() {
   };
 
   const [loginDetails, setLoginDetails] = useState(initialState);
-  const login = useSelector(state => state.Auth.login)
-  console.log(login);
+
+  const [transition, setTransition] = React.useState(undefined);
+  const {login,errMsg} = useSelector(state => state.Auth)
+
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
@@ -55,14 +61,14 @@ export default function Login() {
           <TextField
             type="email"
             name="email"
-            start={<EmailIcon />}
             onChange={handleChange}
-            value={loginDetails.email}
             error
+            value={loginDetails.email}
             id="standard-basic"
             label="Email"
           />
         </div>
+        
         <div>
           <TextField
             name="password"
@@ -78,6 +84,14 @@ export default function Login() {
             Login
           </Button>
         </div>
+        <br/>
+
+          {
+            errMsg && 
+            <Snackbar open={true} variant='secondary' autoHideDuration={2000}>
+              <div>{errMsg}</div>
+            </Snackbar>
+          }
       </form>
       </>
       }
