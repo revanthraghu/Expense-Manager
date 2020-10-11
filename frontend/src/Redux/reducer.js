@@ -12,8 +12,8 @@ export const initialState = {
  isLoading: false,
  isError: false,
  userData: [],
- login: loadData('expenseManagerAuth') || false,
- message: ''
+ errMsg:'',
+ login: loadData('expenseManagerAuth') || false
 };
 
 export default (state = initialState, action) => {
@@ -22,14 +22,16 @@ export default (state = initialState, action) => {
    return {
     ...state,
     isLoading: true,
-    isError: false
+    isError: false,
+    errMsg:''
    };
 
   case POST_REGISTER_SUCCESS:
    return {
     ...state,
     isLoading: false,
-    isError: false
+    isError: false,
+    errMsg:''
    };
 
   case POST_REGISTER_FAILURE:
@@ -38,13 +40,14 @@ export default (state = initialState, action) => {
     ...state,
     isLoading: false,
     isError: true,
-    message: action.payload
+    errMsg:action.payload,
    };
   case POST_LOGIN_REQUEST:
    return {
     ...state,
     isLoading: true,
-    isError: false
+    isError: false,
+    errMsg:''
    };
 
   case POST_LOGIN_SUCCESS:
@@ -53,7 +56,8 @@ export default (state = initialState, action) => {
     ...state,
     isLoading: false,
     isError: false,
-    login: true
+    login: true,
+    errMsg:''
    };
 
   case POST_LOGIN_FAILURE:
@@ -62,7 +66,7 @@ export default (state = initialState, action) => {
     ...state,
     isLoading: false,
     isError: true,
-    message: action.payload
+    errMsg: action.payload
    };
 
   default:
