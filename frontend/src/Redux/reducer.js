@@ -1,13 +1,18 @@
-
-import {POST_REGISTER_REQUEST,POST_REGISTER_SUCCESS,POST_REGISTER_FAILURE,POST_LOGIN_REQUEST,POST_LOGIN_SUCCESS,POST_LOGIN_FAILURE} from './actionTypes'
-import {loadData,saveData} from '../localStorage'
-
+import {
+ POST_REGISTER_REQUEST,
+ POST_REGISTER_SUCCESS,
+ POST_REGISTER_FAILURE,
+ POST_LOGIN_REQUEST,
+ POST_LOGIN_SUCCESS,
+ POST_LOGIN_FAILURE
+} from './actionTypes';
+import { loadData, saveData } from '../localStorage';
 
 export const initialState = {
  isLoading: false,
  isError: false,
  userData: [],
- errMsg:'',
+ errMsg: '',
  login: loadData('expenseManagerAuth') || false
 };
 
@@ -18,7 +23,7 @@ export default (state = initialState, action) => {
     ...state,
     isLoading: true,
     isError: false,
-    errMsg:''
+    errMsg: ''
    };
 
   case POST_REGISTER_SUCCESS:
@@ -26,23 +31,22 @@ export default (state = initialState, action) => {
     ...state,
     isLoading: false,
     isError: false,
-    errMsg:''
+    errMsg: ''
    };
 
   case POST_REGISTER_FAILURE:
-   console.log(action.payload);
    return {
     ...state,
     isLoading: false,
     isError: true,
-    errMsg:action.payload,
+    errMsg: action.payload
    };
   case POST_LOGIN_REQUEST:
    return {
     ...state,
     isLoading: true,
     isError: false,
-    errMsg:''
+    errMsg: ''
    };
 
   case POST_LOGIN_SUCCESS:
@@ -52,11 +56,10 @@ export default (state = initialState, action) => {
     isLoading: false,
     isError: false,
     login: true,
-    errMsg:''
+    errMsg: ''
    };
 
   case POST_LOGIN_FAILURE:
-   console.log(action.payload);
    return {
     ...state,
     isLoading: false,

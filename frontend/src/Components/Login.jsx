@@ -1,7 +1,6 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { TextField, Snackbar, Slide } from '@material-ui/core';
+import { TextField, Snackbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import NavBar from './NavBar';
@@ -20,15 +19,15 @@ const useStyles = makeStyles((theme) => ({
    margin: theme.spacing(1)
   }
  }
-
 }));
 
-function TransitionDown(props) {
- return <Slide {...props} direction="down" />;
-}
+// function TransitionDown(props) {
+//  return <Slide {...props} direction="down" />;
+// }
 
 export default function Login() {
  const classes = useStyles();
+ const [open, setOpen] = useState(false);
 
  const initialState = {
   email: '',
@@ -37,8 +36,12 @@ export default function Login() {
 
  const [loginDetails, setLoginDetails] = useState(initialState);
 
- const [transition, setTransition] = React.useState(undefined);
+ //  const [transition, setTransition] = React.useState(undefined);
  const { login, errMsg } = useSelector((state) => state.Auth);
+
+ useEffect(() => {
+  setOpen(true);
+ }, [setOpen, errMsg]);
 
  const dispatch = useDispatch();
 
@@ -47,8 +50,17 @@ export default function Login() {
   setLoginDetails((state) => ({ ...state, [name]: value }));
  };
 
- const handleLogin = () => {
+ const handleLogin = (e) => {
+  e.preventDefault();
   dispatch(postLogin(loginDetails));
+ };
+
+ const handleClose = (event, reason) => {
+  if (reason === 'clickaway') {
+   return;
+  }
+
+  setOpen(false);
  };
 
  return (
@@ -58,9 +70,15 @@ export default function Login() {
    ) : (
     <>
      <NavBar />
-     <form className={classes.root} noValidate autoComplete="on">
+     <form
+      onSubmit={handleLogin}
+      noValidate
+      className={classes.root}
+      autoComplete="on"
+     >
       <div>
        <TextField
+        required={true}
         type="email"
         name="email"
         start={<EmailIcon />}
@@ -73,6 +91,7 @@ export default function Login() {
       </div>
       <div>
        <TextField
+        required={true}
         name="password"
         type="password"
         onChange={handleChange}
@@ -85,14 +104,24 @@ export default function Login() {
       <div>
        <Button
         style={{ width: '80%', margin: '30px' }}
-        onClick={handleLogin}
+        type="submit"
         variant="contained"
         color="secondary"
        >
         Login
        </Button>
       </div>
-     </form> 
+      {errMsg !== '' ? (
+       <Snackbar
+        style={{ position: 'relative' }}
+        open={open}
+        autoHideDuration={3000}
+        onClose={handleClose}
+       >
+        <div style={{ marginTop: '15px', color: 'red' }}>* {errMsg}</div>
+       </Snackbar>
+      ) : null}
+     </form>
     </>
    )}
   </>

@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import EmailIcon from '@material-ui/icons/Email';
-import { useHistory } from 'react-router-dom';
 import { postRegister } from '../Redux/actions';
 import NavBar from './NavBar';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -33,18 +32,24 @@ export default function Register() {
 
  const classes = useStyles();
  const [registerDetails, setRegisterDetails] = useState(initialState);
- const history = useHistory();
  const dispatch = useDispatch();
- const errMsg = useSelector((state) => state.errMsg);
- console.log(errMsg);
+ const { errMsg } = useSelector((state) => state.Auth);
+
+ const [open, setOpen] = useState(false);
 
  const handleChange = (e) => {
   const { name, value } = e.target;
   setRegisterDetails((state) => ({ ...state, [name]: value }));
  };
 
- const handleRegister = () => {
-  console.log(registerDetails);
+ useEffect(() => {
+  if (errMsg) {
+   setOpen(true);
+  }
+ }, [errMsg, setOpen]);
+
+ const handleRegister = (e) => {
+  e.preventDefault();
   const { fName, lName, ...state } = registerDetails;
   let payload = {
    ...state,
@@ -53,12 +58,26 @@ export default function Register() {
   dispatch(postRegister(payload));
  };
 
+ const handleClose = (event, reason) => {
+  if (reason === 'clickaway') {
+   return;
+  }
+
+  setOpen(false);
+ };
+
  return (
   <>
    <NavBar />
-   <form className={classes.root} noValidate autoComplete="on">
+   <form
+    onSubmit={handleRegister}
+    noValidate
+    className={classes.root}
+    autoComplete="on"
+   >
     <div>
      <TextField
+      required={true}
       type="text"
       name="fName"
       start={<EmailIcon />}
@@ -69,8 +88,19 @@ export default function Register() {
       label="First Name"
      />
     </div>
+    {errMsg.includes('name') ? (
+     <Snackbar
+      style={{ position: 'relative' }}
+      open={open}
+      autoHideDuration={3000}
+      onClose={handleClose}
+     >
+      <div style={{ margin: '20px 0 -25px 0', color: 'red' }}>{errMsg}</div>
+     </Snackbar>
+    ) : null}
     <div>
      <TextField
+      required={true}
       type="text"
       name="lName"
       start={<EmailIcon />}
@@ -81,8 +111,19 @@ export default function Register() {
       label="Last Name"
      />
     </div>
+    {errMsg.includes('name') ? (
+     <Snackbar
+      style={{ position: 'relative' }}
+      open={open}
+      autoHideDuration={3000}
+      onClose={handleClose}
+     >
+      <div style={{ margin: '20px 0 -25px 0', color: 'red' }}>{errMsg}</div>
+     </Snackbar>
+    ) : null}
     <div>
      <TextField
+      required={true}
       type="email"
       name="email"
       start={<EmailIcon />}
@@ -93,8 +134,19 @@ export default function Register() {
       label="Email"
      />
     </div>
+    {errMsg.includes('email') ? (
+     <Snackbar
+      style={{ position: 'relative' }}
+      open={open}
+      autoHideDuration={3000}
+      onClose={handleClose}
+     >
+      <div style={{ margin: '20px 0 -25px 0', color: 'red' }}>{errMsg}</div>
+     </Snackbar>
+    ) : null}
     <div>
      <TextField
+      required={true}
       type="password"
       name="password"
       onChange={handleChange}
@@ -104,10 +156,20 @@ export default function Register() {
       label="Password"
      />
     </div>
+    {errMsg.includes('password') ? (
+     <Snackbar
+      style={{ position: 'relative' }}
+      open={open}
+      autoHideDuration={3000}
+      onClose={handleClose}
+     >
+      <div style={{ margin: '20px 0 -25px 0', color: 'red' }}>{errMsg}</div>
+     </Snackbar>
+    ) : null}
     <div>
      <Button
       style={{ width: '80%', margin: '30px' }}
-      onClick={handleRegister}
+      type="submit"
       variant="contained"
       color="secondary"
      >
@@ -115,65 +177,6 @@ export default function Register() {
      </Button>
     </div>
     <div></div>
-   </form>
-  </>
- );
- return (
-  <>
-   <NavBar />
-   <form className={classes.root} noValidate autoComplete="off">
-    <div>
-     <TextField
-      type="text"
-      name="fName"
-      start={<EmailIcon />}
-      onChange={handleChange}
-      value={registerDetails.fName}
-      error
-      id="standard-basic"
-      label="First Name"
-     />
-    </div>
-    <div>
-     <TextField
-      type="text"
-      name="lName"
-      start={<EmailIcon />}
-      onChange={handleChange}
-      value={registerDetails.lName}
-      error
-      id="standard-basic"
-      label="Last Name"
-     />
-    </div>
-    <div>
-     <TextField
-      type="email"
-      name="email"
-      start={<EmailIcon />}
-      onChange={handleChange}
-      value={registerDetails.email}
-      error
-      id="standard-basic"
-      label="Email"
-     />
-    </div>
-    <div>
-     <TextField
-      name="password"
-      onChange={handleChange}
-      value={registerDetails.password}
-      error
-      id="standard-basic"
-      label="Password"
-     />
-    </div>
-    <div>
-     <Button onClick={handleRegister} variant="contained" color="secondary">
-      Register
-     </Button>
-    </div>
-    <div>{errMsg && <div>{errMsg}</div>}</div>
    </form>
   </>
  );
