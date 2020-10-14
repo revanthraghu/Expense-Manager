@@ -7,6 +7,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import { useHistory } from 'react-router-dom';
 import { postRegister } from '../Redux/actions';
 import NavBar from './NavBar';
+import Snackbar from '@material-ui/core/Snackbar';
 
 const useStyles = makeStyles((theme) => ({
  root: {
@@ -34,6 +35,8 @@ export default function Register() {
  const [registerDetails, setRegisterDetails] = useState(initialState);
  const history = useHistory();
  const dispatch = useDispatch();
+ const errMsg = useSelector((state) => state.errMsg);
+ console.log(errMsg);
 
  const handleChange = (e) => {
   const { name, value } = e.target;
@@ -92,6 +95,7 @@ export default function Register() {
     </div>
     <div>
      <TextField
+      type="password"
       name="password"
       onChange={handleChange}
       value={registerDetails.password}
@@ -111,6 +115,65 @@ export default function Register() {
      </Button>
     </div>
     <div></div>
+   </form>
+  </>
+ );
+ return (
+  <>
+   <NavBar />
+   <form className={classes.root} noValidate autoComplete="off">
+    <div>
+     <TextField
+      type="text"
+      name="fName"
+      start={<EmailIcon />}
+      onChange={handleChange}
+      value={registerDetails.fName}
+      error
+      id="standard-basic"
+      label="First Name"
+     />
+    </div>
+    <div>
+     <TextField
+      type="text"
+      name="lName"
+      start={<EmailIcon />}
+      onChange={handleChange}
+      value={registerDetails.lName}
+      error
+      id="standard-basic"
+      label="Last Name"
+     />
+    </div>
+    <div>
+     <TextField
+      type="email"
+      name="email"
+      start={<EmailIcon />}
+      onChange={handleChange}
+      value={registerDetails.email}
+      error
+      id="standard-basic"
+      label="Email"
+     />
+    </div>
+    <div>
+     <TextField
+      name="password"
+      onChange={handleChange}
+      value={registerDetails.password}
+      error
+      id="standard-basic"
+      label="Password"
+     />
+    </div>
+    <div>
+     <Button onClick={handleRegister} variant="contained" color="secondary">
+      Register
+     </Button>
+    </div>
+    <div>{errMsg && <div>{errMsg}</div>}</div>
    </form>
   </>
  );

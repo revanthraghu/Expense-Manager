@@ -54,7 +54,6 @@ export const postLoginFailure = (payload) => ({
 });
 
 export const postLogin = (payload) => (dispatch) => {
- console.log(payload);
  dispatch(postLoginRequest(payload));
  axios({
   method: 'post',
