@@ -10,7 +10,7 @@ function App() {
  return (
   <div className="App">
    <div>
-    <video autoPlay muted loop className="video">
+   <video autoPlay muted loop className="video">
      <source src="bg.mp4" type="video/mp4" />
     </video>
     <h1 className="heading">Expense Manager</h1>
@@ -18,8 +18,6 @@ function App() {
      <Route path="/" exact component={Register} />
      <Route path="/login" component={Login} />
      <Route path = '/dashboard' component={Dashboard}/>
-
-
     </div>
    </div>
   </div>
