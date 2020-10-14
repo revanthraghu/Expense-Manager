@@ -56,7 +56,7 @@ export default function Register() {
  return (
   <>
    <NavBar />
-   <form className={classes.root} noValidate autoComplete="off">
+   <form className={classes.root} noValidate autoComplete="on">
     <div>
      <TextField
       type="text"
