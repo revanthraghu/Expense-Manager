@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import TextField from "@material-ui/core/TextField";
+import {TextField,Card,CardContent} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import EmailIcon from "@material-ui/icons/Email";
@@ -15,6 +15,10 @@ const useStyles = makeStyles((theme) => ({
       width: 200,
     },
   },
+  card: {
+    width: '35%',
+    margin: '10% 0 0 60%'
+  }
 }));
 
 export default function Login() {
@@ -45,6 +49,8 @@ export default function Login() {
         login ? <Redirect to = '/dashboard'/> : 
       <>
       <NavBar />
+      <Card>
+        <CardContent>
       <form
         className={classes.root}
         style={{ marginLeft: "60%" }}
@@ -79,6 +85,8 @@ export default function Login() {
           </Button>
         </div>
       </form>
+      </CardContent>
+      </Card>
       </>
       }
     </>

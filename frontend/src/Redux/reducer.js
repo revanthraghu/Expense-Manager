@@ -1,5 +1,5 @@
 import {POST_REGISTER_REQUEST,POST_REGISTER_SUCCESS,POST_REGISTER_FAILURE,POST_LOGIN_REQUEST,POST_LOGIN_SUCCESS,POST_LOGIN_FAILURE} from './actionTypes'
-import {loadData,saveData} from './localStorage'
+import {loadData,saveData} from '../localStorage'
 
 export const initialState = {
     isLoading:false,

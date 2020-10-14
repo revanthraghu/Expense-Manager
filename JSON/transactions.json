@@ -1,0 +1,28 @@
+{
+  "transactions": [
+    {
+      "moneyType": "Cash",
+      "transactionType": "Expense",
+      "category": "Accessories",
+      "amount": "125",
+      "description": "Bangles",
+      "id": "e865ac8d-476b-4fa7-adc9-b1e9ceaf341e"
+    },
+    {
+      "moneyType": "Credit",
+      "transactionType": "Expense",
+      "category": "Accessories",
+      "amount": "1999",
+      "description": "Heels",
+      "id": "320e0aae-3193-45d1-8155-a4fea76b0426"
+    },
+    {
+      "moneyType": "Cash",
+      "transactionType": "Expense",
+      "category": "Accessories",
+      "amount": "455",
+      "description": "Clutch",
+      "id": "4e8e97cc-8c58-4087-836e-b13a811d3c85"
+    }
+  ]
+}
