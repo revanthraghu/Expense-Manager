@@ -28,12 +28,14 @@ import {
   TextField,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import AssessmentIcon from "@material-ui/icons/Assessment";
 import { useDispatch, useSelector } from "react-redux";
 import { postTransaction } from "../Transactions/actions";
+import {logout} from '../Redux/actions'
 import "date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -41,6 +43,7 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import Transactions from "./Transactions";
+import {Link} from 'react-router-dom'
 
 const drawerWidth = 240;
 
@@ -134,6 +137,12 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     margin: "0 2% 3% 82%",
   },
+  user: {
+    marginLeft: '55%',
+    marginRight:'1%',
+    fontWeight:'bold',
+    fontSize:'20px'
+  }
 }));
 
 export default function Dashboard() {
@@ -182,7 +191,13 @@ export default function Dashboard() {
     setTransactionDetails(initialState);
   };
 
+  const handleLogout = () => {
+    dispatch(logout)
+  }
+
   const transactions = useSelector((state) => state.transaction.transactions);
+  const {userData,login} = useSelector(state => state.Auth)
+  console.log(login);
 
   return (
     <div className={classes.root}>
@@ -200,12 +215,18 @@ export default function Dashboard() {
             onClick={handleDrawerOpen}
             edge="start"
             className={clsx(classes.menuButton, {
-              [classes.hide]: open,
+              [classes.hide]: open
             })}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap></Typography>
+          <Typography variant="h4" noWrap>
+            Expense Manager
+          </Typography>
+          <Typography className={classes.user}>
+            {userData.name}
+          </Typography>
+          <ExitToAppIcon onClick={handleLogout} />
         </Toolbar>
       </AppBar>
       <Drawer
@@ -232,14 +253,18 @@ export default function Dashboard() {
         </div>
         <Divider />
         <List>
+        <Link to='/dashboard' style={{color:'#B33771', textDecoration:'none'}}>
           <ListItem button key={"Dashboard"}>
             <DashboardIcon className={classes.icon} />
             <ListItemText primary={"Dashboard"} />
           </ListItem>
+          </Link>
+          <Link to='/ledger' style={{color:'#B33771', textDecoration:'none'}}>
           <ListItem button key={"Ledger"}>
             <AssessmentIcon className={classes.icon} />
             <ListItemText primary={"Ledger"} />
           </ListItem>
+          </Link>
         </List>
       </Drawer>
       <main className={classes.content}>
@@ -392,8 +417,9 @@ export default function Dashboard() {
             </Button>
           </CardActions>
         </Card>
-
+        { transactions && 
         <Transactions style={{ marginTop: "5%" }} />
+        }
       </main>
     </div>
   );

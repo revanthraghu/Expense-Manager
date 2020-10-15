@@ -4,14 +4,15 @@ import {
  POST_REGISTER_FAILURE,
  POST_LOGIN_REQUEST,
  POST_LOGIN_SUCCESS,
- POST_LOGIN_FAILURE
+ POST_LOGIN_FAILURE,
+ LOGOUT
 } from './actionTypes';
 import { loadData, saveData } from '../localStorage';
 
 export const initialState = {
  isLoading: false,
  isError: false,
- userData: [],
+ userData: loadData("expenseUser") || [],
  errMsg: '',
  login: loadData('expenseManagerAuth') || false
 };
@@ -41,7 +42,8 @@ export default (state = initialState, action) => {
     isError: true,
     errMsg: action.payload
    };
-  case POST_LOGIN_REQUEST:
+  
+   case POST_LOGIN_REQUEST:
    return {
     ...state,
     isLoading: true,
@@ -51,12 +53,14 @@ export default (state = initialState, action) => {
 
   case POST_LOGIN_SUCCESS:
    saveData('expenseManagerAuth', true);
+   saveData('expenseUser', action.payload)
    return {
     ...state,
     isLoading: false,
     isError: false,
     login: true,
-    errMsg: ''
+    errMsg: '',
+    userData:action.payload
    };
 
   case POST_LOGIN_FAILURE:
@@ -66,6 +70,14 @@ export default (state = initialState, action) => {
     isError: true,
     errMsg: action.payload
    };
+
+   case LOGOUT:
+     console.log('logout');
+      saveData('expenseManagerAuth', false);
+      return {
+       ...state,
+       login:false
+      }
 
   default:
    return state;

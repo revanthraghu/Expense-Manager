@@ -4,7 +4,8 @@ import {
  POST_LOGIN_FAILURE,
  POST_REGISTER_REQUEST,
  POST_REGISTER_SUCCESS,
- POST_REGISTER_FAILURE
+ POST_REGISTER_FAILURE,
+ LOGOUT
 } from './actionTypes';
 import axios from 'axios';
 
@@ -64,3 +65,8 @@ export const postLogin = (payload) => (dispatch) => {
   .then((res) => dispatch(postLoginSuccess(res.data)))
   .catch((err) => dispatch(postLoginFailure(err.response.data)));
 };
+
+// logout
+export const logout = () => ({
+  type: LOGOUT
+})

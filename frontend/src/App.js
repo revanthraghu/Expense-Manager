@@ -5,6 +5,8 @@ import Login from './Components/Login';
 import Register from './Components/Register';
 import Dashboard from './Components/Dashboard';
 import { useLocation } from 'react-router-dom';
+import Ledger from './Components/Ledger';
+
 
 function App() {
  const location = useLocation();
@@ -27,6 +29,7 @@ function App() {
      <Route path="/login" component={Login} />
     </div>
     <Route path="/dashboard" component={Dashboard} />
+    <Route path = '/ledger' component={Ledger}/>
    </div>
   </div>
  );
