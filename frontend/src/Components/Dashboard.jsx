@@ -1,8 +1,9 @@
 import React, { useState, useRef } from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { v4 as uuidv4 } from 'uuid';
 import PieChartIcon from '@material-ui/icons/PieChart';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import {
  Drawer,
  AppBar,
@@ -27,15 +28,15 @@ import {
  TextField
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import { useDispatch, useSelector } from 'react-redux';
 import { postTransaction } from '../Transactions/actions';
 import { logout } from '../Redux/actions';
-import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/core/styles';
 import 'date-fns';
 import {
@@ -152,16 +153,14 @@ const useStyles = makeStyles((theme) => ({
   }
  },
  user: {
-  fontWeight: 'bold'
+  fontWeight: 'bold',
+  color: '#212121'
  },
  category: {
   padding: '2% 4%',
-  marginTop: '8%',
-  background: '#22a6b3',
-  color: 'white',
+  marginTop: '5px',
   fontSize: '15px',
-  border: '1px solid #22a6b3',
-  borderRadius: '8px'
+  marginLeft: '15px'
  },
  calendar: {
   color: palette.primary1Color,
@@ -171,6 +170,13 @@ const useStyles = makeStyles((theme) => ({
   selectTextColor: palette.alternateTextColor,
   calendarYearBackgroundColor: palette.canvasColor,
   headerColor: palette.pickerHeaderColor || palette.primary1Color
+ },
+ wallet: {
+  backgroundColor: '#7222b3',
+  color: '#b34822',
+  padding: '10px',
+  borderRadius: '50%',
+  fontSize: '40px'
  }
 }));
 
@@ -257,9 +263,44 @@ export default function Dashboard() {
       </Typography>
      </div>
      <div style={{ display: 'flex', alignItems: 'center' }}>
-      <Typography variant="h6">{userData.name}</Typography>
+      <div
+       style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+       }}
+      >
+       <AccountBalanceWalletIcon className={classes.wallet} />
+       <div
+        style={{
+         display: 'flex',
+         margin: '0 15px',
+         flexDirection: 'column',
+         justifyContent: 'center'
+        }}
+       >
+        <Typography className={classes.user}>
+         {userData.name}
+         <br />
+         <Typography
+          style={{
+           color: 'white',
+           fontWeight: 'bolder',
+           width: 'max-content',
+           marginLeft: 'auto'
+          }}
+         >
+          {userData.balance === 0
+           ? '₹ 0'
+           : userData.balance > 0
+           ? `+ ₹ ${userData.balance}`
+           : `- ₹ ${userData.balance}`}
+         </Typography>
+        </Typography>
+       </div>
+      </div>
       <IconButton onClick={handleLogout}>
-       <ExitToAppIcon style={{ color: 'white' }} />
+       <PowerSettingsNewIcon style={{ fontSize: 30, color: '#6D214F' }} />
       </IconButton>
      </div>
     </Toolbar>
@@ -323,26 +364,26 @@ export default function Dashboard() {
       <Grid container spacing={2}>
        <Grid item xs={6}>
         <Box className={classes.paper}>
-         <select
+         <Select
           name="category"
           className={classes.category}
           value={transactionDetails.category}
           onChange={handleTransaction}
          >
-          <option value="Category">Category</option>
-          <option value="Accessories">Accessories</option>
-          <option value="Education">Education</option>
-          <option value="Food">Food</option>
-          <option value="Clothing">Clothing</option>
-          <option value="Furniture">Furniture</option>
-          <option value="Electronics">Electronics</option>
-          <option value="Haelth">Health</option>
-          <option value="Maintenance">Maintenance</option>
-          <option value="Living">Living</option>
-          <option value="Transportation">Transportation</option>
-          <option value="Fees">Fees</option>
-          <option value="Others">Others</option>
-         </select>
+          <MenuItem value="Category">Category</MenuItem>
+          <MenuItem value="Accessories">Accessories</MenuItem>
+          <MenuItem value="Education">Education</MenuItem>
+          <MenuItem value="Food">Food</MenuItem>
+          <MenuItem value="Clothing">Clothing</MenuItem>
+          <MenuItem value="Furniture">Furniture</MenuItem>
+          <MenuItem value="Electronics">Electronics</MenuItem>
+          <MenuItem value="Haelth">Health</MenuItem>
+          <MenuItem value="Maintenance">Maintenance</MenuItem>
+          <MenuItem value="Living">Living</MenuItem>
+          <MenuItem value="Transportation">Transportation</MenuItem>
+          <MenuItem value="Fees">Fees</MenuItem>
+          <MenuItem value="Others">Others</MenuItem>
+         </Select>
         </Box>
        </Grid>
        <Grid item xs={6}>

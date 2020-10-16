@@ -150,7 +150,14 @@ router.delete('/transactions/delete', async (req, res) => {
    }
    user.save();
    await Transaction.deleteOne({ _id: transaction_id });
-   res.status(200).json(transaction);
+   res
+    .status(200)
+    .json({
+     ...transaction,
+     balance: user.balance,
+     income: user.income,
+     expenses: user.expenses
+    });
   } else {
    res.status(400).send('Transaction not found');
   }

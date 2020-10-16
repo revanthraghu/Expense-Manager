@@ -4,6 +4,8 @@ import clsx from 'clsx';
 import { Doughnut } from 'react-chartjs-2';
 import { Link, useHistory } from 'react-router-dom';
 import PieChartIcon from '@material-ui/icons/PieChart';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import {
  Drawer,
  AppBar,
@@ -98,7 +100,15 @@ const useStyles = makeStyles((theme) => ({
   padding: theme.spacing(2)
  },
  user: {
-  fontWeight: 'bold'
+  fontWeight: 'bold',
+  color: '#212121'
+ },
+ wallet: {
+  backgroundColor: '#7222b3',
+  color: '#b34822',
+  padding: '10px',
+  borderRadius: '50%',
+  fontSize: '40px'
  },
  heading: {
   color: '#B33771',
@@ -224,9 +234,44 @@ function Chart() {
        </Typography>
       </div>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-       <Typography variant="h6">{userData.name}</Typography>
+       <div
+        style={{
+         display: 'flex',
+         alignItems: 'center',
+         justifyContent: 'center'
+        }}
+       >
+        <AccountBalanceWalletIcon className={classes.wallet} />
+        <div
+         style={{
+          display: 'flex',
+          margin: '0 15px',
+          flexDirection: 'column',
+          justifyContent: 'center'
+         }}
+        >
+         <Typography className={classes.user}>
+          {userData.name}
+          <br />
+          <Typography
+           style={{
+            color: 'white',
+            fontWeight: 'bolder',
+            width: 'max-content',
+            marginLeft: 'auto'
+           }}
+          >
+           {userData.balance === 0
+            ? '₹ 0'
+            : userData.balance > 0
+            ? `+ ₹ ${userData.balance}`
+            : `- ₹ ${userData.balance}`}
+          </Typography>
+         </Typography>
+        </div>
+       </div>
        <IconButton onClick={handleLogout}>
-        <ExitToAppIcon style={{ color: 'white' }} />
+        <PowerSettingsNewIcon style={{ fontSize: 30, color: '#6D214F' }} />
        </IconButton>
       </div>
      </Toolbar>
