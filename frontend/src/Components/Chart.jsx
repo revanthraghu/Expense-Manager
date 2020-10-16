@@ -1,17 +1,10 @@
-import React, {useState} from "react";
+import React, {useState,useEffect} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import clsx from "clsx";
+import {Doughnut} from 'react-chartjs-2'
 import {Link} from 'react-router-dom'
 import PieChartIcon from '@material-ui/icons/PieChart';
-
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
   Drawer,
   AppBar,
   Toolbar,
@@ -30,26 +23,8 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import AssessmentIcon from "@material-ui/icons/Assessment";
-import {logout} from '../Redux/actions'
-
-
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  body: {
-    fontSize: 14,
-  },
-}))(TableCell);
-
-const StyledTableRow = withStyles((theme) => ({
-  root: {
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
-  },
-}))(TableRow);
+import {logout} from '../Redux/actions';
+import {getDates,getExpense,getIncome} from '../Chart/actions'
 
 const drawerWidth = 240;
 
@@ -119,11 +94,6 @@ const useStyles = makeStyles((theme) => ({
     color: "#B33771",
     fontSize:40
   },
-  transaction: {
-    color: "#f78fb3",
-    textAlign: "left",
-    padding: "1%",
-  },
   paper: {
     padding: theme.spacing(2),
   },
@@ -132,11 +102,17 @@ const useStyles = makeStyles((theme) => ({
     marginRight:'1%',
     fontWeight:'bold',
     fontSize:'20px'
+  },
+  heading: {
+    color:'#B33771',
+    margin:'8% 0',
+    fontSize:'24px',
+    fontWeight:'bold'
   }
 }));
 
 
-function Ledger() {
+function Chart() {
   const classes = useStyles();
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -148,13 +124,70 @@ function Ledger() {
 
   const handleDrawerClose = () => {
     setOpen(false);
-  };  const transactions = useSelector((state) => state.transaction.transactions);
-  let ledgerTransactions = transactions.reverse();
+  };  
+  
+  const transactions = useSelector((state) => state.transaction.transactions);
+  console.log(transactions);
   const {userData,login} = useSelector(state => state.Auth)
+
+  const date = transactions.map(item => item.date.slice(0,10))
+  const expense = transactions.filter(item => item.transactionType === 'Expense').map(item => item.amount)
+  const income = transactions.filter(item => item.transactionType === 'Income').map(item => item.amount)
+
+  useEffect(() => {
+    dispatch(getDates(date))
+    dispatch(getExpense(expense))
+    dispatch(getIncome(income))
+  }, [])
 
   const handleLogout = () => {
     dispatch(logout)
   }
+
+  let expenseCategory = transactions.filter(item => item.transactionType === 'Expense').map(item => item.category)
+  let incomeCategory = transactions.filter(item => item.transactionType === 'Income').map(item => item.category)
+
+  let expenseColor = [],incomeColor = []
+
+  const random = () => {
+    return Math.floor(Math.random()*(255))
+  }
+
+  const randomColor = () => {
+    return `rgb(${random()},${random()},${random()})`
+  }
+
+  for(let i = 0; i < expenseCategory.length; i++) {
+    expenseColor.push(randomColor())
+  }
+
+  for(let i = 0; i < incomeCategory.length; i++) {
+    incomeColor.push(randomColor())
+  }
+
+  console.log(expenseColor,incomeColor)
+
+  const expenseData = {
+    labels: expenseCategory,
+    datasets: [
+      {
+        type: 'doughnut',
+        label: "Savings (thousands)",
+        data: expense,
+        backgroundColor: expenseColor,
+      },
+    ],
+  };
+  const incomeData = {
+    labels: incomeCategory,
+    datasets: [
+      {
+        label: "Income (thousands)",
+        data: income,
+        backgroundColor: incomeColor,
+      }
+    ],
+  };
 
   return (
     <div>
@@ -234,46 +267,18 @@ function Ledger() {
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <TableContainer  component={Paper}>
-            <Table className={classes.table} aria-label="customized table">
-              <TableHead >
-                <TableRow >
-                  <StyledTableCell>Description</StyledTableCell>
-                  <StyledTableCell align="right">Category</StyledTableCell>
-                  <StyledTableCell align="right">
-                    Transaction Type
-                  </StyledTableCell>
-                  <StyledTableCell align="right">Amount</StyledTableCell>
-                  <StyledTableCell align="right">Date</StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {ledgerTransactions.map((item) => (
-                  <StyledTableRow key={item.id}>
-                    <StyledTableCell component="th" scope="row">
-                      {item.description}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      {item.category}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      {item.moneyType}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      ₹ {item.amount}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      {item.date}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <div style={{width:"50%",float:"left"}}>
+          <Typography className={classes.heading}>Expense Data</Typography>
+            <Doughnut data = {expenseData} />
+          </div>
+          <div style={{width:"50%", float:'left'}}>  
+          <Typography className={classes.heading}>Income Data</Typography>
+            <Doughnut data = {incomeData} />
+          </div>
         </main>
       </div>
     </div>
   );
 }
 
-export default Ledger;
+export default Chart;

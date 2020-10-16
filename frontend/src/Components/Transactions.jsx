@@ -7,14 +7,15 @@ const useStyles = makeStyles((theme) => ({
   card: {
     marginTop: "3%",
     marginLeft:'30%',
-    paddingLeft:'3%',
+    paddingLeft:'2%',
     color:'white',
     width:'40%',
     height:'70px',
-    borderRadius:'10px'
+    borderRadius:'10px',
+    fontWeight:'bolder'
   },
   cardTypography: {
-    margin:'0 5%'
+    margin:'0 5%',
   }
 }));
 
@@ -31,7 +32,7 @@ function Transactions() {
   return (
     <div>
         
-      <Typography variant="h6" color="secondary" style={{ marginTop: "8%" }}>
+      <Typography variant="h5" color="secondary" style={{ marginTop: "8%", fontWeight:'bold' }}>
         Latest Five Transactions
       </Typography>
       {transactions &&
@@ -43,11 +44,11 @@ function Transactions() {
                 alignItems="center"
                 justifyContent="left"
               >
-                <Typography>{item.description}</Typography>
-                <Typography className = {classes.cardTypography}>{item.category}</Typography>
-                <Typography>{item.transactionType}</Typography>
-                <Typography className={classes.cardTypography}>{item.moneyType}</Typography>
-                <Typography>{item.transactionType === 'Expense' ? '-' : '+'} ₹ {item.amount}</Typography>
+                <Typography style={{fontWeight:'bold'}}>{item.description}</Typography>
+                <Typography className = {classes.cardTypography} style={{fontWeight:'bold'}}>{item.category}</Typography>
+                <Typography style={{fontWeight:'bold'}}>{item.transactionType}</Typography>
+                <Typography style={{fontWeight:'bold'}} className={classes.cardTypography}>{item.moneyType}</Typography>
+                <Typography style={{fontWeight:'bold'}}>{item.transactionType === 'Expense' ? '-' : '+'} ₹ {item.amount}</Typography>
               </Box>
 
         ))}

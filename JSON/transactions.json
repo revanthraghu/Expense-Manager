@@ -1,28 +1,67 @@
 {
   "transactions": [
     {
-      "moneyType": "Cash",
-      "transactionType": "Expense",
-      "category": "Accessories",
-      "amount": "125",
-      "description": "Bangles",
-      "id": "e865ac8d-476b-4fa7-adc9-b1e9ceaf341e"
+      "moneyType": "Cheque",
+      "transactionType": "Income",
+      "category": "Education",
+      "amount": "7500",
+      "description": "Tutoring",
+      "id": "4a41d492-ef94-46d2-b250-1007dab6df26",
+      "date": "2020-10-14T15:41:00.000Z"
     },
     {
       "moneyType": "Credit",
       "transactionType": "Expense",
       "category": "Accessories",
-      "amount": "1999",
-      "description": "Heels",
-      "id": "320e0aae-3193-45d1-8155-a4fea76b0426"
+      "amount": "10000",
+      "description": "Watch",
+      "id": "a66ca0c9-21fa-4fff-b277-4e96c7222569",
+      "date": "2020-10-15T15:41:00.000Z"
+    },
+    {
+      "moneyType": "Transfer",
+      "transactionType": "Income",
+      "category": "Living",
+      "amount": "10000",
+      "description": "Rent",
+      "id": "5c48ad77-d7ea-4cca-b252-ccfa30db5da1",
+      "date": "2020-10-19T15:41:00.000Z"
     },
     {
       "moneyType": "Cash",
       "transactionType": "Expense",
       "category": "Accessories",
-      "amount": "455",
-      "description": "Clutch",
-      "id": "4e8e97cc-8c58-4087-836e-b13a811d3c85"
+      "amount": "225",
+      "description": "Bangles",
+      "id": "9719a499-cfcd-4fe9-afce-d500bc1170a6",
+      "date": "2020-10-20T15:41:00.000Z"
+    },
+    {
+      "moneyType": "Cash",
+      "transactionType": "Expense",
+      "category": "Education",
+      "amount": "100000",
+      "description": "fees",
+      "id": "50d6e84a-f7f5-47ba-8652-6ff58c7b771c",
+      "date": "2020-10-29T15:41:00.000Z"
+    },
+    {
+      "moneyType": "Cash",
+      "transactionType": "Income",
+      "category": "Others",
+      "amount": "102312",
+      "description": "Salary",
+      "id": "036f84fe-a673-4a67-acef-a134e021b6bb",
+      "date": "2020-10-29T15:41:00.000Z"
+    },
+    {
+      "moneyType": "Cheque",
+      "transactionType": "Income",
+      "category": "Others",
+      "amount": "60000",
+      "description": "IT Returns",
+      "id": "aeb9ec22-f7df-42f0-abee-180e89cd5d8e",
+      "date": "2020-10-25T15:41:00.000Z"
     }
   ]
 }
