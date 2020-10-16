@@ -4,7 +4,9 @@ import {
  POST_LOGIN_FAILURE,
  POST_REGISTER_REQUEST,
  POST_REGISTER_SUCCESS,
- POST_REGISTER_FAILURE
+ POST_REGISTER_FAILURE,
+ RESET_ERROR,
+ LOGOUT
 } from './actionTypes';
 import axios from 'axios';
 
@@ -66,5 +68,9 @@ export const postLogin = (payload) => (dispatch) => {
 };
 
 export const resetErrorMsg = () => ({
- type: 'RESET_ERROR'
+ type: RESET_ERROR
+});
+// logout
+export const logout = () => ({
+ type: LOGOUT
 });

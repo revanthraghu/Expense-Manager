@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { v4 as uuidv4 } from "uuid";
+import PieChartIcon from '@material-ui/icons/PieChart';
 import {
   Drawer,
   AppBar,
@@ -22,18 +23,19 @@ import {
   Box,
   FormControl,
   FormControlLabel,
-  FormLabel,
   Radio,
   RadioGroup,
   TextField,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import AssessmentIcon from "@material-ui/icons/Assessment";
 import { useDispatch, useSelector } from "react-redux";
 import { postTransaction } from "../Transactions/actions";
+import { logout } from "../Redux/actions";
 import "date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -41,6 +43,8 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import Transactions from "./Transactions";
+import { Link } from "react-router-dom";
+import palette from 'material-palette';
 
 const drawerWidth = 240;
 
@@ -106,8 +110,9 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
   },
   icon: {
-    marginRight: 40,
+    margin: '0 40px 30px 0',
     color: "#B33771",
+    fontSize:40
   },
   addTransaction: {
     maxWidth: "50%",
@@ -115,13 +120,17 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "left",
   },
   transaction: {
-    color: "#f78fb3",
-    textAlign: "left",
+    color: "#B33771",
     padding: "1%",
+    textAlign:'center'
   },
   description: {
     width: "96%",
     marginLeft: "2%",
+    border:"1px solid #22a6b3",
+    borderRadius:20,
+    marginTop:20,
+    paddingTop:20,paddingLeft:20
   },
   paper: {
     padding: theme.spacing(2),
@@ -130,10 +139,38 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "50px",
   },
   submit: {
-    background: "green",
+    background: "#22a6b3",
     color: "white",
     margin: "0 2% 3% 82%",
+    '&:hover': {
+      background:'#22a6b3',
+      filter:'brightness(1.2)'
+    }
   },
+  user: {
+    marginLeft: "55%",
+    marginRight: "1%",
+    fontWeight: "bold",
+    fontSize: "20px",
+  },
+  category: {
+    padding: "2% 4%",
+    marginTop: "8%",
+    background: "#22a6b3",
+    color: "white",
+    fontSize: "15px",
+    border: "1px solid #22a6b3",
+    borderRadius: "8px",
+  },
+  calendar: {
+    color: palette.primary1Color,
+    textColor: palette.alternateTextColor,
+    calendarTextColor: palette.textColor,
+    selectColor: palette.primary2Color,
+    selectTextColor: palette.alternateTextColor,
+    calendarYearBackgroundColor: palette.canvasColor,
+    headerColor: palette.pickerHeaderColor || palette.primary1Color,
+  }
 }));
 
 export default function Dashboard() {
@@ -177,12 +214,19 @@ export default function Dashboard() {
     let payload = {
       ...transactionDetails,
       id: uuidv4(),
+      date: selectedDate,
     };
     dispatch(postTransaction(payload));
     setTransactionDetails(initialState);
   };
 
+  const handleLogout = () => {
+    dispatch(logout);
+  };
+
   const transactions = useSelector((state) => state.transaction.transactions);
+  const { userData, login } = useSelector((state) => state.Auth);
+  console.log(login);
 
   return (
     <div className={classes.root}>
@@ -205,7 +249,11 @@ export default function Dashboard() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap></Typography>
+          <Typography variant="h4" noWrap>
+            Expense Manager
+          </Typography>
+          <Typography className={classes.user}>{userData.name}</Typography>
+          <ExitToAppIcon onClick={handleLogout} />
         </Toolbar>
       </AppBar>
       <Drawer
@@ -230,16 +278,35 @@ export default function Dashboard() {
             )}
           </IconButton>
         </div>
-        <Divider />
+        <Divider style={{marginBottom:'45%'}} />
         <List>
-          <ListItem button key={"Dashboard"}>
-            <DashboardIcon className={classes.icon} />
-            <ListItemText primary={"Dashboard"} />
-          </ListItem>
-          <ListItem button key={"Ledger"}>
-            <AssessmentIcon className={classes.icon} />
-            <ListItemText primary={"Ledger"} />
-          </ListItem>
+          <Link
+            to="/dashboard"
+            style={{ color: "#B33771", textDecoration: "none" }}
+          >
+            <ListItem button key={"Dashboard"}>
+              <DashboardIcon className={classes.icon} />
+              <ListItemText primary={"Dashboard"} />
+            </ListItem>
+          </Link>
+          <Link
+            to="/ledger"
+            style={{ color: "#B33771", textDecoration: "none" }}
+          >
+            <ListItem button key={"Ledger"}>
+              <AssessmentIcon className={classes.icon} />
+              <ListItemText primary={"Ledger"} />
+            </ListItem>
+          </Link>
+          <Link
+            to="/chart"
+            style={{ color: "#B33771", textDecoration: "none" }}
+          >
+            <ListItem button key={"chart"}>
+              <PieChartIcon className={classes.icon} />
+              <ListItemText primary={"Report"} />
+            </ListItem>
+          </Link>
         </List>
       </Drawer>
       <main className={classes.content}>
@@ -254,7 +321,7 @@ export default function Dashboard() {
               Add Transaction
             </Typography>
             <Divider />
-            <Typography style={{ margin: "2%" }}>Description</Typography>
+            {/* <Typography style={{ margin: "2%" }}>Description</Typography> */}
 
             <TextareaAutosize
               rowsMin={8}
@@ -268,10 +335,9 @@ export default function Dashboard() {
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <Box className={classes.paper}>
-                  Category
-                  <br />
                   <select
                     name="category"
+                    className={classes.category}
                     value={transactionDetails.category}
                     onChange={handleTransaction}
                   >
@@ -297,6 +363,7 @@ export default function Dashboard() {
                     <Grid container justify="space-around">
                       <KeyboardDatePicker
                         margin="normal"
+                        className={classes.calendar}
                         id="date-picker-dialog"
                         format="MM/dd/yyyy"
                         value={selectedDate}
@@ -326,22 +393,22 @@ export default function Dashboard() {
                 >
                   <FormControlLabel
                     value="Cash"
-                    control={<Radio />}
+                    control={<Radio style={{color:"#22a6b3"}} />}
                     label="Cash"
                   />
                   <FormControlLabel
                     value="Cheque"
-                    control={<Radio />}
+                    control={<Radio style={{color:"#22a6b3"}} />}
                     label="Cheque"
                   />
                   <FormControlLabel
                     value="Credit"
-                    control={<Radio />}
+                    control={<Radio style={{color:"#22a6b3"}} />}
                     label="Credit Card"
                   />
                   <FormControlLabel
                     value="Transfer"
-                    control={<Radio />}
+                    control={<Radio style={{color:"#22a6b3"}} />}
                     label="Transfer"
                   />
                 </RadioGroup>
@@ -358,7 +425,7 @@ export default function Dashboard() {
                   label="Enter your amount"
                 />
               </Grid>
-              <Grid item style={{marginTop:'2%', marginLeft:'4%'}}>
+              <Grid item style={{ marginTop: "2%", marginLeft: "4%" }}>
                 <FormControl component="fieldset">
                   <RadioGroup
                     aria-label="transactionType"
@@ -369,12 +436,12 @@ export default function Dashboard() {
                   >
                     <FormControlLabel
                       value="Expense"
-                      control={<Radio />}
+                      control={<Radio style={{color:"#22a6b3"}} />}
                       label="Expense"
                     />
                     <FormControlLabel
                       value="Income"
-                      control={<Radio />}
+                      control={<Radio style={{color:"#22a6b3"}} />}
                       label="Income"
                     />
                   </RadioGroup>
@@ -392,8 +459,7 @@ export default function Dashboard() {
             </Button>
           </CardActions>
         </Card>
-
-        <Transactions style={{ marginTop: "5%" }} />
+        {transactions && <Transactions style={{ marginTop: "5%" }} />}
       </main>
     </div>
   );
