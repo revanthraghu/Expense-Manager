@@ -25,12 +25,13 @@ import {
 } from "@material-ui/core";
 import { makeStyles, useTheme, withStyles } from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import AssessmentIcon from "@material-ui/icons/Assessment";
 import {logout} from '../Redux/actions'
+import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 
 
 const StyledTableCell = withStyles((theme) => ({
@@ -128,10 +129,20 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   },
   user: {
-    marginLeft: '55%',
+    color:'#B33771',
     marginRight:'1%',
     fontWeight:'bold',
     fontSize:'20px'
+  },
+  wallet: {
+    color:'#d35400',
+    fontSize:40,
+    backgroundColor:'#34495e',
+    height:40,
+    width:40,
+    borderRadius:20,
+    padding:5,
+    marginLeft:'55%'
   }
 }));
 
@@ -151,10 +162,13 @@ function Ledger() {
   };  const transactions = useSelector((state) => state.transaction.transactions);
   let ledgerTransactions = transactions.reverse();
   const {userData,login} = useSelector(state => state.Auth)
+  console.log(userData);
 
   const handleLogout = () => {
     dispatch(logout)
   }
+
+  const bal = useSelector(state => state.chart.balance)
 
   return (
     <div>
@@ -181,8 +195,13 @@ function Ledger() {
             <Typography variant="h4" noWrap>
               Expense Manager
             </Typography>
-            <Typography className={classes.user}>{userData.name}</Typography>
-            <ExitToAppIcon onClick={handleLogout} />
+            <AccountBalanceWalletIcon className={classes.wallet}/>
+            <Typography className={classes.user}>
+            {userData.name}
+            <br/>
+            <Typography style={{color:'white',fontWeight:'bolder'}}>{bal === 0 ? 0 : bal > 0 ? `+ ₹ ${bal}`: `- ₹ ${bal}`}</Typography>
+            </Typography>
+            <PowerSettingsNewIcon style={{fontSize:30, color:'#6D214F'}} onClick={handleLogout} />
           </Toolbar>
         </AppBar>
         <Drawer

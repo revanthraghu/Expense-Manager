@@ -1,4 +1,4 @@
-import {DATE, EXPENSE, INCOME} from './actionTypes'
+import {DATE, EXPENSE, INCOME, BALANCE} from './actionTypes'
 
 export const getDates = (payload) => ({
     type: DATE,
@@ -12,5 +12,10 @@ export const getExpense = (payload) => ({
 
 export const getIncome = (payload) => ({
     type: INCOME,
+    payload
+})
+
+export const getBalance = (payload) => ({
+    type:BALANCE,
     payload
 })

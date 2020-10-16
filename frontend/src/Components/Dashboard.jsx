@@ -27,8 +27,8 @@ import {
   RadioGroup,
   TextField,
 } from "@material-ui/core";
+import Alert from '@material-ui/lab/Alert';
 import MenuIcon from "@material-ui/icons/Menu";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import DashboardIcon from "@material-ui/icons/Dashboard";
@@ -45,6 +45,9 @@ import DateFnsUtils from "@date-io/date-fns";
 import Transactions from "./Transactions";
 import { Link } from "react-router-dom";
 import palette from 'material-palette';
+import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+
 
 const drawerWidth = 240;
 
@@ -148,10 +151,10 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   user: {
-    marginLeft: "55%",
-    marginRight: "1%",
-    fontWeight: "bold",
-    fontSize: "20px",
+    color:'#B33771',
+    marginRight:'1%',
+    fontWeight:'bold',
+    fontSize:'20px'
   },
   category: {
     padding: "2% 4%",
@@ -170,6 +173,16 @@ const useStyles = makeStyles((theme) => ({
     selectTextColor: palette.alternateTextColor,
     calendarYearBackgroundColor: palette.canvasColor,
     headerColor: palette.pickerHeaderColor || palette.primary1Color,
+  },
+  wallet: {
+    color:'#d35400',
+    fontSize:40,
+    backgroundColor:'#34495e',
+    height:40,
+    width:40,
+    borderRadius:20,
+    padding:5,
+    marginLeft:'55%'
   }
 }));
 
@@ -178,6 +191,7 @@ export default function Dashboard() {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  const [visible, setVisible] = useState('hidden')
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -216,6 +230,7 @@ export default function Dashboard() {
       id: uuidv4(),
       date: selectedDate,
     };
+    setVisible('block')
     dispatch(postTransaction(payload));
     setTransactionDetails(initialState);
   };
@@ -226,7 +241,9 @@ export default function Dashboard() {
 
   const transactions = useSelector((state) => state.transaction.transactions);
   const { userData, login } = useSelector((state) => state.Auth);
-  console.log(login);
+  console.log(userData);
+
+  const bal = useSelector(state => state.chart.balance)
 
   return (
     <div className={classes.root}>
@@ -252,8 +269,13 @@ export default function Dashboard() {
           <Typography variant="h4" noWrap>
             Expense Manager
           </Typography>
-          <Typography className={classes.user}>{userData.name}</Typography>
-          <ExitToAppIcon onClick={handleLogout} />
+          <AccountBalanceWalletIcon className={classes.wallet}/>
+            <Typography className={classes.user}>
+            {userData.name}
+            <br/>
+            <Typography style={{color:'white',fontWeight:'bolder'}}>{bal === 0 ? 0 : bal > 0 ? `+ ₹ ${bal}`: `- ₹ ${bal}`}</Typography>
+            </Typography>
+            <PowerSettingsNewIcon style={{fontSize:30, color:'#6D214F'}} onClick={handleLogout} />
         </Toolbar>
       </AppBar>
       <Drawer
@@ -459,6 +481,7 @@ export default function Dashboard() {
             </Button>
           </CardActions>
         </Card>
+        <Alert style={{display: {visible}}} onClose={() => {}}>Transaction Success</Alert>
         {transactions && <Transactions style={{ marginTop: "5%" }} />}
       </main>
     </div>

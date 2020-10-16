@@ -18,13 +18,14 @@ import {
 } from "@material-ui/core";
 import { makeStyles, useTheme, withStyles } from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import AssessmentIcon from "@material-ui/icons/Assessment";
 import {logout} from '../Redux/actions';
-import {getDates,getExpense,getIncome} from '../Chart/actions'
+import {getDates,getExpense,getIncome,getBalance} from '../Chart/actions'
+import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 
 const drawerWidth = 240;
 
@@ -98,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   },
   user: {
-    marginLeft: '55%',
+    color:'#B33771',
     marginRight:'1%',
     fontWeight:'bold',
     fontSize:'20px'
@@ -108,6 +109,16 @@ const useStyles = makeStyles((theme) => ({
     margin:'8% 0',
     fontSize:'24px',
     fontWeight:'bold'
+  },
+  wallet: {
+    color:'#d35400',
+    fontSize:40,
+    backgroundColor:'#34495e',
+    height:40,
+    width:40,
+    borderRadius:20,
+    padding:5,
+    marginLeft:'55%'
   }
 }));
 
@@ -134,10 +145,14 @@ function Chart() {
   const expense = transactions.filter(item => item.transactionType === 'Expense').map(item => item.amount)
   const income = transactions.filter(item => item.transactionType === 'Income').map(item => item.amount)
 
+  const balance = income.reduce((acc = 0 , curr) => Number(acc) + Number(curr)) - expense.reduce((acc = 0, curr) => Number(acc) + Number(curr))
+  console.log(balance);
+
   useEffect(() => {
     dispatch(getDates(date))
     dispatch(getExpense(expense))
     dispatch(getIncome(income))
+    dispatch(getBalance(balance))
   }, [])
 
   const handleLogout = () => {
@@ -189,6 +204,9 @@ function Chart() {
     ],
   };
 
+  const bal = useSelector(state => state.chart.balance)
+  console.log(bal);
+
   return (
     <div>
       <div className={classes.root}>
@@ -214,8 +232,13 @@ function Chart() {
             <Typography variant="h4" noWrap>
               Expense Manager
             </Typography>
-            <Typography className={classes.user}>{userData.name}</Typography>
-            <ExitToAppIcon onClick={handleLogout} />
+            <AccountBalanceWalletIcon className={classes.wallet}/>
+            <Typography className={classes.user}>
+            {userData.name}
+            <br/>
+            <Typography style={{color:'white',fontWeight:'bolder'}}>{bal === 0 ? 0 : bal > 0 ? `+ ₹ ${bal}`: `- ₹ ${bal}`}</Typography>
+            </Typography>
+            <PowerSettingsNewIcon style={{fontSize:30, color:'#6D214F'}} onClick={handleLogout} />
           </Toolbar>
         </AppBar>
         <Drawer

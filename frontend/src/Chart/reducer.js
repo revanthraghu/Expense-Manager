@@ -1,9 +1,11 @@
-import {DATE, EXPENSE, INCOME} from './actionTypes'
+import {DATE, EXPENSE, INCOME, BALANCE} from './actionTypes'
+import {loadData,saveData} from '../localStorage'
 
 const initialState = {
     date:[],
     expense:[],
-    income:[]
+    income:[],
+    balance: loadData("expenseMngBal") || 0
 }
 
 export default (state = initialState, action) => {
@@ -26,6 +28,13 @@ export default (state = initialState, action) => {
         return {
             ...state,
             income:[...action.payload]
+        }
+
+    case BALANCE:
+        saveData("expenseMngBal",action.payload)
+        return {
+            ...state,
+            balance:action.payload
         }
 
     default:
