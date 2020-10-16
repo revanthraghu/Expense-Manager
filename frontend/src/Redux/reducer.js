@@ -77,6 +77,7 @@ export default (state = initialState, action) => {
   case LOGOUT:
    console.log('logout');
    saveData('expenseManagerAuth', false);
+   saveData('expenseUser', []);
    return {
     ...state,
     login: false

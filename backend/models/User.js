@@ -21,6 +21,18 @@ const userSchema = new Schema({
   required: true,
   max: 1024,
   min: 6
+ },
+ balance: {
+  type: Number,
+  default: 0
+ },
+ income: {
+  type: Number,
+  default: 0
+ },
+ expenses: {
+  type: Number,
+  default: 0
  }
 });
 
