@@ -35,6 +35,20 @@ function Transactions() {
       <Typography variant="h5" color="secondary" style={{ marginTop: "8%", fontWeight:'bold' }}>
         Latest Five Transactions
       </Typography>
+      <Typography>
+      <Box className={classes.card}
+                display="flex"
+                bgcolor= 'teal'
+                alignItems="center"
+                justifyContent="left"
+              >
+                <Typography style={{fontWeight:'bold'}}>Description</Typography>
+                <Typography className = {classes.cardTypography} style={{fontWeight:'bold'}}>Category</Typography>
+                <Typography style={{fontWeight:'bold'}}>Type</Typography>
+                <Typography style={{fontWeight:'bold'}} className={classes.cardTypography}>Collect</Typography>
+                <Typography style={{fontWeight:'bold'}}> Amount</Typography>
+              </Box>
+      </Typography>
       {transactions &&
         latestTransactions.map((item) => (
 

@@ -365,7 +365,7 @@ export default function Dashboard() {
                         margin="normal"
                         className={classes.calendar}
                         id="date-picker-dialog"
-                        format="MM/dd/yyyy"
+                        format="mm/dd/yyyy"
                         value={selectedDate}
                         onChange={handleDateChange}
                         KeyboardButtonProps={{
