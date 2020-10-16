@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const Route = require('./routes/route');
+const authRoute = require('./routes/route');
 const dotenv = require('dotenv');
 
 var cors = require('cors');
@@ -30,7 +30,7 @@ mongoose.connect(
  }
 );
 
-app.use('/api', Route);
+app.use('/api', authRoute);
 
 app.listen(5000, () => {
  console.log('The server is live on port 5000');
