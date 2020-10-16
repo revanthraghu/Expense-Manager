@@ -4,7 +4,7 @@ import { TextField, Snackbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import NavBar from './NavBar';
-import { postLogin } from '../Redux/actions';
+import { postLogin, resetErrorMsg } from '../Redux/actions';
 import { Redirect } from 'react-router-dom';
 import EmailIcon from '@material-ui/icons/Email';
 
@@ -59,8 +59,8 @@ export default function Login() {
   if (reason === 'clickaway') {
    return;
   }
-
   setOpen(false);
+  dispatch(resetErrorMsg());
  };
 
  return (
@@ -115,7 +115,7 @@ export default function Login() {
        <Snackbar
         style={{ position: 'relative' }}
         open={open}
-        autoHideDuration={3000}
+        autoHideDuration={2000}
         onClose={handleClose}
        >
         <div style={{ marginTop: '15px', color: 'red' }}>* {errMsg}</div>

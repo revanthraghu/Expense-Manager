@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import EmailIcon from '@material-ui/icons/Email';
-import { postRegister } from '../Redux/actions';
+import { postRegister, resetErrorMsg } from '../Redux/actions';
 import NavBar from './NavBar';
 import Snackbar from '@material-ui/core/Snackbar';
 
@@ -62,8 +62,8 @@ export default function Register() {
   if (reason === 'clickaway') {
    return;
   }
-
   setOpen(false);
+  dispatch(resetErrorMsg());
  };
 
  return (
@@ -138,7 +138,7 @@ export default function Register() {
      <Snackbar
       style={{ position: 'relative' }}
       open={open}
-      autoHideDuration={3000}
+      autoHideDuration={2000}
       onClose={handleClose}
      >
       <div style={{ margin: '20px 0 -25px 0', color: 'red' }}>{errMsg}</div>

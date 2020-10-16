@@ -66,6 +66,8 @@ export default (state = initialState, action) => {
     isError: true,
     errMsg: action.payload
    };
+  case 'RESET_ERROR':
+   return { ...state, errMsg: '' };
 
   default:
    return state;

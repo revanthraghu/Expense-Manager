@@ -64,3 +64,7 @@ export const postLogin = (payload) => (dispatch) => {
   .then((res) => dispatch(postLoginSuccess(res.data)))
   .catch((err) => dispatch(postLoginFailure(err.response.data)));
 };
+
+export const resetErrorMsg = () => ({
+ type: 'RESET_ERROR'
+});

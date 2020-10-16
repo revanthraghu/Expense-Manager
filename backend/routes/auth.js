@@ -17,7 +17,7 @@ router.post('/register', async (req, res) => {
 
  const emailExists = await User.findOne({ email: req.body.email });
  if (emailExists) {
-  return res.status(400).send('Account already exists');
+  return res.status(400).send('email already registered');
  }
  try {
   const hashedPassword = await bcrypt.hash(
@@ -45,7 +45,7 @@ router.post('/login', async (req, res) => {
  try {
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
-   return res.status(400).send("Account doesn't exist");
+   return res.status(400).send('Email not found');
   }
 
   const validPass = await bcrypt.compare(req.body.password, user.password);
