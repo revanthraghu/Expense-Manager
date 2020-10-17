@@ -6,7 +6,7 @@ import { Table,
   TableHead,
   TableRow,Paper, Typography } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
-import { makeStyles, useTheme, withStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { getLatest } from "../Transactions/actions";
 
 
@@ -28,7 +28,8 @@ const useStyles = makeStyles((theme) => ({
     width:'80%',
     marginLeft:'10%'
   }
-}));
+}))
+
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -51,11 +52,18 @@ const StyledTableRow = withStyles((theme) => ({
 
 
 function Transactions() {
-  const classes = useStyles();
-  const latestTransactions = useSelector((state) => state.transaction.latestTrans);
-  const { userData, login } = useSelector((state) => state.Auth);
-  console.log(latestTransactions)
-  const dispatch = useDispatch()
+ const classes = useStyles();
+ const latestTransactions = useSelector(
+  (state) => state.transaction.latestTrans
+ );
+ const { userData, login } = useSelector((state) => state.Auth);
+ console.log(latestTransactions);
+ const dispatch = useDispatch();
+
+ useEffect(() => {
+  console.log('use effect');
+  dispatch(getLatest(userData._id));
+ }, []);
 
   useEffect(() => {
      console.log('use effect')
@@ -109,6 +117,7 @@ function Transactions() {
           </TableContainer>
     </div>
   );
+
 }
 
 export default Transactions;

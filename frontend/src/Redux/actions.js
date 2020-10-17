@@ -63,7 +63,9 @@ export const postLogin = (payload) => (dispatch) => {
   headers: { 'content-type': 'application/json' },
   data: payload
  })
-  .then((res) => dispatch(postLoginSuccess(res.data)))
+  .then((res) => {
+   dispatch(postLoginSuccess(res.data)); //dispatch(saveBalance(res.data.balance))
+  })
   .catch((err) => dispatch(postLoginFailure(err.response.data)));
 };
 

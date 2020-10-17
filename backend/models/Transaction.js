@@ -13,7 +13,8 @@ const transactionSchema = new Schema({
  },
  category: {
   type: String,
-  required: true
+  required: true,
+  default: 'others'
  },
  amount: {
   type: String,
@@ -21,7 +22,8 @@ const transactionSchema = new Schema({
  },
  description: {
   type: String,
-  required: true
+  required: true,
+  default: 'transaction'
  },
  date: {
   type: Date,
