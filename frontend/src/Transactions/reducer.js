@@ -86,9 +86,10 @@ export default (state = initialState, action) => {
      }
 
      case ALL_TRANS:
+       console.log(action.payload.transactions);
        return {
          ...state,
-         allTrans:action.payload
+         allTrans:action.payload.transactions
        }
 
   default:

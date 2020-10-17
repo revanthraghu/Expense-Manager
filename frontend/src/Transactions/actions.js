@@ -44,6 +44,7 @@ export const getLatest = (id) => (dispatch) => {
 }
 
 export const getAllTransactions = id => dispatch => {
+  console.log(id);
   return axios.get(`http://localhost:5000/api/transactions?user=${id}&filter=all&sort=desc&page=1`)
   .then(res => dispatch(saveAllTrans(res.data)))
 }

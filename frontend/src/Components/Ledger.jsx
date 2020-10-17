@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import clsx from 'clsx';
 import { Link, useHistory } from 'react-router-dom';
@@ -35,6 +35,8 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import { logout } from '../Redux/actions';
+import { getAllTransactions } from '../Transactions/actions';
+
 
 const StyledTableCell = withStyles((theme) => ({
  head: {
@@ -156,10 +158,16 @@ function Ledger() {
  const handleDrawerClose = () => {
   setOpen(false);
  };
- const transactions = useSelector((state) => state.transaction.transactions);
- let ledgerTransactions = transactions.reverse();
+
  const { userData, login } = useSelector((state) => state.Auth);
  const history = useHistory();
+
+ useEffect(() => {
+  dispatch((getAllTransactions(userData._id)))
+}, [])
+
+const ledgerTransactions = useSelector(state => state.transaction.allTrans)
+
 
  const handleLogout = () => {
   dispatch(logout());
