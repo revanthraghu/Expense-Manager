@@ -29,7 +29,7 @@ Content-Type: application/json
       "user_id": "5f89b324e626b84260ea86f9"
 }
 ###
-GET http://localhost:5000/api/transactions?user=5f89b324e626b84260ea86f9&filter=all&sort=desc&page=1
+GET http://localhost:5000/api/transactions?user=5f89fb76d352ff231937c999&filter=all&sort=desc&page=1
 ###
 DELETE http://localhost:5000/api/transactions/delete
 Content-Type: application/json

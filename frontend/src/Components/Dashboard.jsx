@@ -27,6 +27,7 @@ import {
  RadioGroup,
  TextField
 } from '@material-ui/core';
+import DescriptionIcon from '@material-ui/icons/Description';
 import MenuIcon from '@material-ui/icons/Menu';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -346,6 +347,15 @@ export default function Dashboard() {
       <ListItem button key={'chart'}>
        <PieChartIcon className={classes.icon} />
        <ListItemText primary={'Report'} />
+      </ListItem>
+     </Link>
+     <Link
+      href="https://documenter.getpostman.com/view/11565353/TVRkaoJ7"
+      onClick={preventDefault}
+     >
+      <ListItem button key={'postmanDocs'}>
+       <DescriptionIcon className={classes.icon} />
+       <ListItemText primary={'Postman Docs'} />
       </ListItem>
      </Link>
     </List>

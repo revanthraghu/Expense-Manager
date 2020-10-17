@@ -86,7 +86,7 @@ export default (state = initialState, action) => {
   case ALL_TRANS:
    return {
     ...state,
-    allTrans: action.payload
+    allTrans: action.payload.transactions
    };
 
   default:

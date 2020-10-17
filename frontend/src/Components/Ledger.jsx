@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import clsx from 'clsx';
 import { Link, useHistory } from 'react-router-dom';
@@ -29,28 +29,33 @@ import {
 } from '@material-ui/core';
 import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import { logout } from '../Redux/actions';
+import { getAllTransactions } from '../Transactions/actions';
 
 const StyledTableCell = withStyles((theme) => ({
  head: {
   backgroundColor: theme.palette.common.black,
-  color: theme.palette.common.white
+  color: theme.palette.common.white,
+  textAlign:'center'
  },
  body: {
-  fontSize: 14
+  fontSize: 14,
+  textAlign:'center'
  }
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
  root: {
   '&:nth-of-type(odd)': {
-   backgroundColor: theme.palette.action.hover
-  }
+   backgroundColor: '#7ed6df'
+  },
+  '&:nth-of-type(even)': {
+    backgroundColor: '#82ccdd'
+   }
  }
 }))(TableRow);
 
@@ -139,7 +144,12 @@ const useStyles = makeStyles((theme) => ({
   color: '#b34822',
   padding: 6,
   borderRadius: '50%',
-  fontSize: 40
+  fontSize: 40,
+  border:0
+ },
+ table: {
+   width:'80%',
+   margin:'5% 0 0 10%'
  }
 }));
 
@@ -156,10 +166,16 @@ function Ledger() {
  const handleDrawerClose = () => {
   setOpen(false);
  };
- const transactions = useSelector((state) => state.transaction.transactions);
- let ledgerTransactions = transactions.reverse();
+
  const { userData, login } = useSelector((state) => state.Auth);
  const history = useHistory();
+
+ useEffect(() => {
+  dispatch((getAllTransactions(userData._id)))
+}, [])
+
+const ledgerTransactions = useSelector(state => state.transaction.allTrans)
+
 
  const handleLogout = () => {
   dispatch(logout());
@@ -320,8 +336,8 @@ function Ledger() {
       <Button onClick={() => handleSort('desc')} variant="contained" color="secondary">
         Descending
       </Button>
-     <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="customized table">
+     <TableContainer className={classes.table} component={Paper}>
+      <Table aria-label="customized table">
        <TableHead>
         <TableRow>
          <StyledTableCell>Description</StyledTableCell>
