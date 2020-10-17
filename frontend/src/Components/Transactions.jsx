@@ -1,7 +1,12 @@
 import React, {useEffect} from "react";
-import { Card, Typography, CardContent, Box } from "@material-ui/core";
+import { Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,Paper, Typography } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles, useTheme, withStyles } from "@material-ui/core/styles";
 import { getLatest } from "../Transactions/actions";
 
 
@@ -18,8 +23,32 @@ const useStyles = makeStyles((theme) => ({
   },
   cardTypography: {
     margin:'0 5%',
+  },
+  table: {
+    width:'80%',
+    marginLeft:'10%'
   }
 }));
+
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+    textAlign: "center",
+  },
+  body: {
+    fontSize: 14,
+    textAlign: "center",
+    color:'white'
+  },
+}))(TableCell);
+
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    width:'60%',
+  },
+}))(TableRow);
+
 
 function Transactions() {
   const classes = useStyles();
@@ -36,40 +65,48 @@ function Transactions() {
   return (
     <div>
         
-      <Typography variant="h5" color="secondary" style={{ marginTop: "8%", fontWeight:'bold' }}>
+      <Typography variant="h5" color="secondary" style={{ marginTop: "8%", marginBottom:'4%', fontWeight:'bold' }}>
         Latest Five Transactions
       </Typography>
-      <Typography>
-      <Box className={classes.card}
-                display="flex"
-                bgcolor= 'teal'
-                alignItems="center"
-                justifyContent="left"
-              >
-                <Typography style={{fontWeight:'bold'}}>Description</Typography>
-                <Typography className = {classes.cardTypography} style={{fontWeight:'bold'}}>Category</Typography>
-                <Typography style={{fontWeight:'bold'}}>Type</Typography>
-                <Typography style={{fontWeight:'bold'}} className={classes.cardTypography}>Collect</Typography>
-                <Typography style={{fontWeight:'bold'}}> Amount</Typography>
-              </Box>
-      </Typography>
-      { latestTransactions &&
-        latestTransactions.map((item) => (
 
-              <Box className={classes.card}
-                display="flex"
-                bgcolor={item.transactionType === 'Expense' ? "#f53b57" : '#20bf6b'}
-                alignItems="center"
-                justifyContent="left"
-              >
-                <Typography style={{fontWeight:'bold'}}>{item.description}</Typography>
-                <Typography className = {classes.cardTypography} style={{fontWeight:'bold'}}>{item.category}</Typography>
-                <Typography style={{fontWeight:'bold'}}>{item.transactionType}</Typography>
-                <Typography style={{fontWeight:'bold'}} className={classes.cardTypography}>{item.moneyType}</Typography>
-                <Typography style={{fontWeight:'bold'}}>{item.transactionType === 'Expense' ? '-' : '+'} ₹ {item.amount}</Typography>
-              </Box>
-
-        ))}
+      <TableContainer className={classes.table} component={Paper}>
+            <Table aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell>Description</StyledTableCell>
+                  <StyledTableCell align="right">Category</StyledTableCell>
+                  <StyledTableCell align="right">
+                    Transaction Type
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    Received by
+                  </StyledTableCell>
+                  <StyledTableCell align="right">Amount</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {latestTransactions.map((item) => (
+                  <StyledTableRow style={item.transactionType === 'Expense' ? {background:'#b71540'}:{background:'#55efc4'}} key={item.id}>
+                    <StyledTableCell style={item.transactionType === 'Expense' ? {color:'white'}:{color:'black'}} component="th" scope="row">
+                      {item.description}
+                    </StyledTableCell>
+                    <StyledTableCell style={item.transactionType === 'Expense' ? {color:'white'}:{color:'black'}} align="right">
+                      {item.category}
+                    </StyledTableCell>
+                    <StyledTableCell style={item.transactionType === 'Expense' ? {color:'white'}:{color:'black'}} align="right">
+                      {item.transactionType}
+                    </StyledTableCell>
+                    <StyledTableCell style={item.transactionType === 'Expense' ? {color:'white'}:{color:'black'}} align="right">
+                      {item.moneyType}
+                    </StyledTableCell>
+                    <StyledTableCell style={item.transactionType === 'Expense' ? {color:'white'}:{color:'black'}} align="right">
+                      ₹ {item.amount}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
     </div>
   );
 }

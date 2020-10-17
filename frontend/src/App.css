@@ -15,16 +15,16 @@
 
 .card {
  position: fixed;
- right: 30px;
+ right: 10%;
  top: 120px;
  width: 100%;
 }
 
 .heading {
  position: absolute;
- font-size: 40px;
- right: 85px;
- top: 30px;
+ font-size: 48px;
+ right: 30%;
+ top: 4%;
  margin: 0;
  font-weight: bolder;
  color: white;
