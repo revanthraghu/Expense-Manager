@@ -29,7 +29,6 @@ import {
 } from '@material-ui/core';
 import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import DashboardIcon from '@material-ui/icons/Dashboard';
@@ -37,22 +36,26 @@ import AssessmentIcon from '@material-ui/icons/Assessment';
 import { logout } from '../Redux/actions';
 import { getAllTransactions } from '../Transactions/actions';
 
-
 const StyledTableCell = withStyles((theme) => ({
  head: {
   backgroundColor: theme.palette.common.black,
-  color: theme.palette.common.white
+  color: theme.palette.common.white,
+  textAlign:'center'
  },
  body: {
-  fontSize: 14
+  fontSize: 14,
+  textAlign:'center'
  }
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
  root: {
   '&:nth-of-type(odd)': {
-   backgroundColor: theme.palette.action.hover
-  }
+   backgroundColor: '#7ed6df'
+  },
+  '&:nth-of-type(even)': {
+    backgroundColor: '#82ccdd'
+   }
  }
 }))(TableRow);
 
@@ -141,7 +144,12 @@ const useStyles = makeStyles((theme) => ({
   color: '#b34822',
   padding: 6,
   borderRadius: '50%',
-  fontSize: 40
+  fontSize: 40,
+  border:0
+ },
+ table: {
+   width:'80%',
+   margin:'5% 0 0 10%'
  }
 }));
 
@@ -328,8 +336,8 @@ const ledgerTransactions = useSelector(state => state.transaction.allTrans)
       <Button onClick={() => handleSort('desc')} variant="contained" color="secondary">
         Descending
       </Button>
-     <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="customized table">
+     <TableContainer className={classes.table} component={Paper}>
+      <Table aria-label="customized table">
        <TableHead>
         <TableRow>
          <StyledTableCell>Description</StyledTableCell>
