@@ -17,8 +17,7 @@ export const initialState = {
  errMsg: '',
  transactions: loadData('expenseManagerTransactions') || [],
  latestTrans: [],
- allTrans:[],
-  balance: loadData('expenseUser')?.balance || 0
+ allTrans: []
 };
 
 export default (state = initialState, action) => {
@@ -34,15 +33,14 @@ export default (state = initialState, action) => {
    console.log(transactionData);
    console.log(action.payload);
    saveData('expenseManagerTransactions', transactionData);
-   let updatedBal = loadData('expenseUser')
-   updatedBal.balance = action.payload.balance
-   saveData('expenseUser',updatedBal)
+   let updatedBal = loadData('expenseUser');
+   updatedBal.balance = action.payload.balance;
+   saveData('expenseUser', updatedBal);
    return {
     ...state,
     isLoading: false,
     isError: false,
-    transactions: transactionData,
-    balance:action.payload.balance
+    transactions: transactionData
    };
 
   case POST_TRANSACTION_FAILURE:
@@ -79,17 +77,17 @@ export default (state = initialState, action) => {
     errMsg: action.payload
    };
 
-   case LATEST_FIVE:
-     return {
-       ...state,
-       latestTrans:action.payload
-     }
+  case LATEST_FIVE:
+   return {
+    ...state,
+    latestTrans: action.payload
+   };
 
-     case ALL_TRANS:
-       return {
-         ...state,
-         allTrans:action.payload
-       }
+  case ALL_TRANS:
+   return {
+    ...state,
+    allTrans: action.payload
+   };
 
   default:
    return state;

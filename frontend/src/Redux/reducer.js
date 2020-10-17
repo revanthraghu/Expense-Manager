@@ -15,7 +15,7 @@ export const initialState = {
  isError: false,
  userData: loadData('expenseUser') || [],
  errMsg: '',
- login: loadData('expenseManagerAuth') || false,
+ login: loadData('expenseManagerAuth') || false
 };
 
 export default (state = initialState, action) => {
@@ -33,7 +33,7 @@ export default (state = initialState, action) => {
     ...state,
     isLoading: false,
     isError: false,
-    errMsg: '',
+    errMsg: ''
    };
 
   case POST_REGISTER_FAILURE:
@@ -78,7 +78,7 @@ export default (state = initialState, action) => {
    console.log('logout');
    saveData('expenseManagerAuth', false);
    saveData('expenseUser', []);
-   saveData('expenseManagerTransactions',[])
+   saveData('expenseManagerTransactions', []);
    return {
     ...state,
     login: false

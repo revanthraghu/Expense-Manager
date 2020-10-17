@@ -49,7 +49,6 @@ import { Link, useHistory } from 'react-router-dom';
 import palette from 'material-palette';
 import { useEffect } from 'react';
 
-
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -134,7 +133,7 @@ const useStyles = makeStyles((theme) => ({
   borderRadius: 20,
   marginTop: 20,
   '&:focus': {
-    outline:'none'
+   outline: 'none'
   },
   '&:empty:before': {
    content: 'attr(data-placeholder)',
@@ -166,9 +165,9 @@ const useStyles = makeStyles((theme) => ({
   marginTop: '5px',
   fontSize: '15px',
   marginLeft: '15px',
-  background:'#22a6b3',
-  color:'white',
-  borderRadius:'6px',
+  background: '#22a6b3',
+  color: 'white',
+  borderRadius: '6px'
  },
  calendar: {
   color: palette.primary1Color,
@@ -192,9 +191,21 @@ export default function Dashboard() {
  const classes = useStyles();
  const theme = useTheme();
  const dispatch = useDispatch();
- const [open, setOpen] = useState(false);
  const editableDiv = useRef(null);
  const history = useHistory();
+
+ let initialState = {
+  moneyType: 'Cash',
+  transactionType: 'Expense',
+  category: 'Category',
+  amount: ''
+ };
+ const [open, setOpen] = useState(false);
+ const [transactionDetails, setTransactionDetails] = useState(initialState);
+ const [selectedDate, setSelectedDate] = useState(new Date());
+ let userData = JSON.parse(localStorage.getItem('expenseUser'));
+ console.log(userData);
+ const transactions = useSelector((state) => state.transaction.transactions);
 
  const handleDrawerOpen = () => {
   setOpen(true);
@@ -204,29 +215,14 @@ export default function Dashboard() {
   setOpen(false);
  };
 
- let initialState = {
-  moneyType: 'Cash',
-  transactionType: 'Expense',
-  category: 'Category',
-  amount: '',
- };
-
- const [selectedDate, setSelectedDate] = useState(new Date());
- console.log(selectedDate);
-
  const handleDateChange = (date) => {
   setSelectedDate(date);
  };
-
- const [transactionDetails, setTransactionDetails] = useState(initialState);
 
  const handleTransaction = (e) => {
   const { name, value } = e.target;
   setTransactionDetails((state) => ({ ...state, [name]: value }));
  };
-
- const { userData, login } = useSelector((state) => state.Auth);
- const [bal, setBal] = useState(userData.balance)
 
  const handleSubmit = () => {
   let payload = {
@@ -237,21 +233,13 @@ export default function Dashboard() {
   };
   dispatch(postTransaction(payload));
   setTransactionDetails(initialState);
-  editableDiv.current.textContent = ''
+  editableDiv.current.textContent = '';
  };
 
  const handleLogout = () => {
   dispatch(logout());
   history.push('/login');
  };
-
- const transactions = useSelector((state) => state.transaction.transactions);
- const balance = useSelector(state => state.transaction.balance)
- console.log('bal'+balance);
-
- useEffect(() => {
-   setBal(balance)
- }, [balance])
 
  return (
   <div className={classes.root}>
@@ -307,11 +295,11 @@ export default function Dashboard() {
            marginLeft: 'auto'
           }}
          >
-          {bal === 0
+          {userData.balance === 0
            ? '₹ 0'
-           : bal > 0
-           ? `+ ₹ ${bal}`
-           : `- ₹ ${bal}`}
+           : userData.balance > 0
+           ? `+ ₹ ${userData.balance}`
+           : `- ₹ ${userData.balance}`}
          </Typography>
         </Typography>
        </div>
