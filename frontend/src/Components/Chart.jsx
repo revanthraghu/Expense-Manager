@@ -27,6 +27,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import { logout } from '../Redux/actions';
 import { getDates, getExpense, getIncome } from '../Chart/actions';
+import { getAllTransactions } from '../Transactions/actions';
 
 const drawerWidth = 240;
 
@@ -104,11 +105,11 @@ const useStyles = makeStyles((theme) => ({
   color: '#212121'
  },
  wallet: {
-  backgroundColor: '#7222b3',
+  backgroundColor: '#34495e',
   color: '#b34822',
-  padding: '10px',
+  padding: 6,
   borderRadius: '50%',
-  fontSize: '40px'
+  fontSize: 40
  },
  heading: {
   color: '#B33771',
@@ -132,10 +133,16 @@ function Chart() {
   setOpen(false);
  };
 
- const transactions = useSelector((state) => state.transaction.transactions);
- console.log(transactions);
+ 
  const { userData, login } = useSelector((state) => state.Auth);
  const history = useHistory();
+
+ useEffect(() => {
+   dispatch((getAllTransactions(userData._id)))
+ }, [])
+
+ const transactions = useSelector(state => state.transaction.allTrans)
+ console.log(transactions)
 
  const date = transactions.map((item) => item.date.slice(0, 10));
  const expense = transactions

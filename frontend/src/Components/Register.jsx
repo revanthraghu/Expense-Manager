@@ -7,6 +7,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import { postRegister, resetErrorMsg } from '../Redux/actions';
 import NavBar from './NavBar';
 import Snackbar from '@material-ui/core/Snackbar';
+import {useHistory} from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
  root: {
@@ -36,6 +37,7 @@ export default function Register() {
  const { errMsg } = useSelector((state) => state.Auth);
 
  const [open, setOpen] = useState(false);
+ const history = useHistory()
 
  const handleChange = (e) => {
   const { name, value } = e.target;
@@ -55,7 +57,10 @@ export default function Register() {
    ...state,
    name: `${fName} ${lName}`
   };
-  dispatch(postRegister(payload));
+  dispatch(postRegister(payload))
+  if(errMsg === '') {
+    history.push('/login')
+  }
  };
 
  const handleClose = (event, reason) => {

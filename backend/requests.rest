@@ -15,7 +15,7 @@ Content-Type: application/json
     "password": "123456"
 }
 ###
-GET http://localhost:5000/api/transactions/latest?user=5f89b324e626b84260ea86f9
+GET http://localhost:5000/api/transactions/latest?user=5f89fb76d352ff231937c999
 ###
 POST http://localhost:5000/api/transactions/add
 Content-Type: application/json
@@ -24,8 +24,8 @@ Content-Type: application/json
      "moneyType": "Credit",
       "transactionType": "Expense",
       "category": "Accessories",
-      "amount": "2000",
-      "description": "Shirt",
+      "amount": "2999",
+      "description": "Heels",
       "user_id": "5f89b324e626b84260ea86f9"
 }
 ###

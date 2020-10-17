@@ -4,7 +4,9 @@ import {
  POST_TRANSACTION_FAILURE,
  GET_TRANSACTIONS_REQUEST,
  GET_TRANSACTIONS_SUCCESS,
- GET_TRANSACTIONS_FAILURE
+ GET_TRANSACTIONS_FAILURE,
+ LATEST_FIVE,
+ ALL_TRANS
 } from './actionTypes';
 
 import axios from 'axios';
@@ -25,16 +27,39 @@ export const postTransactionFailure = (payload) => ({
  payload
 });
 
+export const saveLatest = payload => ({
+  type: LATEST_FIVE,
+  payload
+})
+
+export const saveAllTrans = payload => ({
+  type: ALL_TRANS,
+  payload
+})
+
+export const getLatest = (id) => (dispatch) => {
+  console.log(id)
+  return axios.get(`http://localhost:5000/api/transactions/latest?user=${id}`)
+  .then(res => dispatch(saveLatest(res.data)))
+}
+
+export const getAllTransactions = id => dispatch => {
+  return axios.get(`http://localhost:5000/api/transactions?user=${id}&filter=all&sort=desc&page=1`)
+  .then(res => dispatch(saveAllTrans(res.data)))
+}
+
 export const postTransaction = (payload) => (dispatch) => {
- dispatch(postTransactionRequest(payload));
- return axios({
+  console.log(payload);
+  dispatch(postTransactionRequest(payload));
+  axios({
   method: 'post',
   url: 'http://localhost:5000/api/transactions/add',
   headers: { 'content-type': 'application/json' },
   data: payload
  })
-  .then((res) => dispatch(postTransactionSuccess(res.data)))
-  .catch((err) => dispatch(postTransactionFailure(err)));
+ .then(res => dispatch(postTransactionSuccess(res.data)))
+  .then(res => dispatch(getLatest(res.data.user_id)))
+  .catch(err => dispatch(postTransactionFailure(err)));
 };
 
 // get all transactions requests

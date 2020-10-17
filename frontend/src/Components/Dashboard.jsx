@@ -47,8 +47,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import Transactions from './Transactions';
 import { Link, useHistory } from 'react-router-dom';
 import palette from 'material-palette';
-import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
-import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+import { useEffect } from 'react';
 
 
 const drawerWidth = 240;
@@ -134,6 +133,9 @@ const useStyles = makeStyles((theme) => ({
   border: '1px solid #22a6b3',
   borderRadius: 20,
   marginTop: 20,
+  '&:focus': {
+    outline:'none'
+  },
   '&:empty:before': {
    content: 'attr(data-placeholder)',
    display: 'block',
@@ -163,7 +165,10 @@ const useStyles = makeStyles((theme) => ({
   padding: '2% 4%',
   marginTop: '5px',
   fontSize: '15px',
-  marginLeft: '15px'
+  marginLeft: '15px',
+  background:'#22a6b3',
+  color:'white',
+  borderRadius:'6px',
  },
  calendar: {
   color: palette.primary1Color,
@@ -175,11 +180,11 @@ const useStyles = makeStyles((theme) => ({
   headerColor: palette.pickerHeaderColor || palette.primary1Color
  },
  wallet: {
-  backgroundColor: '#7222b3',
+  backgroundColor: '#34495e',
   color: '#b34822',
-  padding: '10px',
+  padding: 6,
   borderRadius: '50%',
-  fontSize: '40px'
+  fontSize: 40
  }
 }));
 
@@ -204,7 +209,6 @@ export default function Dashboard() {
   transactionType: 'Expense',
   category: 'Category',
   amount: '',
-  description: ''
  };
 
  const [selectedDate, setSelectedDate] = useState(new Date());
@@ -221,14 +225,19 @@ export default function Dashboard() {
   setTransactionDetails((state) => ({ ...state, [name]: value }));
  };
 
+ const { userData, login } = useSelector((state) => state.Auth);
+ const [bal, setBal] = useState(userData.balance)
+
  const handleSubmit = () => {
   let payload = {
    ...transactionDetails,
    user_id: userData['_id'],
-   date: selectedDate
+   date: selectedDate,
+   description: editableDiv.current.textContent.trim()
   };
   dispatch(postTransaction(payload));
   setTransactionDetails(initialState);
+  editableDiv.current.textContent = ''
  };
 
  const handleLogout = () => {
@@ -237,7 +246,12 @@ export default function Dashboard() {
  };
 
  const transactions = useSelector((state) => state.transaction.transactions);
- const { userData, login } = useSelector((state) => state.Auth);
+ const balance = useSelector(state => state.transaction.balance)
+ console.log('bal'+balance);
+
+ useEffect(() => {
+   setBal(balance)
+ }, [balance])
 
  return (
   <div className={classes.root}>
@@ -293,11 +307,11 @@ export default function Dashboard() {
            marginLeft: 'auto'
           }}
          >
-          {userData.balance === 0
+          {bal === 0
            ? '₹ 0'
-           : userData.balance > 0
-           ? `+ ₹ ${userData.balance}`
-           : `- ₹ ${userData.balance}`}
+           : bal > 0
+           ? `+ ₹ ${bal}`
+           : `- ₹ ${bal}`}
          </Typography>
         </Typography>
        </div>
@@ -374,17 +388,21 @@ export default function Dashboard() {
           onChange={handleTransaction}
          >
           <MenuItem value="Category">Category</MenuItem>
+          <MenuItem value="Salary">Salary</MenuItem>
           <MenuItem value="Accessories">Accessories</MenuItem>
           <MenuItem value="Education">Education</MenuItem>
           <MenuItem value="Food">Food</MenuItem>
           <MenuItem value="Clothing">Clothing</MenuItem>
+          <MenuItem value="Freelancing">Freelancing</MenuItem>
           <MenuItem value="Furniture">Furniture</MenuItem>
           <MenuItem value="Electronics">Electronics</MenuItem>
-          <MenuItem value="Haelth">Health</MenuItem>
+          <MenuItem value="Rent">Rent</MenuItem>
+          <MenuItem value="Health">Health</MenuItem>
           <MenuItem value="Maintenance">Maintenance</MenuItem>
           <MenuItem value="Living">Living</MenuItem>
           <MenuItem value="Transportation">Transportation</MenuItem>
           <MenuItem value="Fees">Fees</MenuItem>
+          <MenuItem value="Business">Business</MenuItem>
           <MenuItem value="Others">Others</MenuItem>
          </Select>
         </Box>

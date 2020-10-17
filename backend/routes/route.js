@@ -92,6 +92,7 @@ router.get('/transactions/', async (req, res) => {
 });
 
 router.post('/transactions/add', async (req, res) => {
+  console.log(req.body);
  let user_id = mongoose.Types.ObjectId(req.body['user_id']);
  let amount = Number(req.body.amount);
  try {

@@ -21,9 +21,11 @@ import {
  CssBaseline,
  Typography,
  Divider,
+ Select,
  IconButton,
  ListItem,
- ListItemText
+ ListItemText,MenuItem,
+ Button
 } from '@material-ui/core';
 import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -133,11 +135,11 @@ const useStyles = makeStyles((theme) => ({
   color: '#212121'
  },
  wallet: {
-  backgroundColor: '#7222b3',
+  backgroundColor: '#34495e',
   color: '#b34822',
-  padding: '10px',
+  padding: 6,
   borderRadius: '50%',
-  fontSize: '40px'
+  fontSize: 40
  }
 }));
 
@@ -163,6 +165,18 @@ function Ledger() {
   dispatch(logout());
   history.push('/login');
  };
+
+ const [sort,setSort] = useState('')
+
+ const [category, setCategory] = useState('all')
+
+ const handleCategoryFilter = (category) => {
+  setCategory(category)
+ }
+
+ const handleSort = (order) => {
+   setSort(order)
+ }
 
  return (
   <div>
@@ -276,6 +290,36 @@ function Ledger() {
     </Drawer>
     <main className={classes.content}>
      <div className={classes.toolbar} />
+     <Select
+          name="category"
+          className={classes.category}
+          value={category}
+          onChange={handleCategoryFilter}
+         >
+          <MenuItem value="Category">Category</MenuItem>
+          <MenuItem value="Salary">Salary</MenuItem>
+          <MenuItem value="Accessories">Accessories</MenuItem>
+          <MenuItem value="Education">Education</MenuItem>
+          <MenuItem value="Food">Food</MenuItem>
+          <MenuItem value="Clothing">Clothing</MenuItem>
+          <MenuItem value="Freelancing">Freelancing</MenuItem>
+          <MenuItem value="Furniture">Furniture</MenuItem>
+          <MenuItem value="Electronics">Electronics</MenuItem>
+          <MenuItem value="Rent">Rent</MenuItem>
+          <MenuItem value="Health">Health</MenuItem>
+          <MenuItem value="Maintenance">Maintenance</MenuItem>
+          <MenuItem value="Living">Living</MenuItem>
+          <MenuItem value="Transportation">Transportation</MenuItem>
+          <MenuItem value="Fees">Fees</MenuItem>
+          <MenuItem value="Business">Business</MenuItem>
+          <MenuItem value="Others">Others</MenuItem>
+         </Select>
+     <Button onClick={() => handleSort('asc')} variant="contained" color="secondary">
+        Ascending
+      </Button>
+      <Button onClick={() => handleSort('desc')} variant="contained" color="secondary">
+        Descending
+      </Button>
      <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="customized table">
        <TableHead>

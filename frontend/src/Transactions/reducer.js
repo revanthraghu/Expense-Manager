@@ -4,7 +4,9 @@ import {
  POST_TRANSACTION_FAILURE,
  GET_TRANSACTIONS_REQUEST,
  GET_TRANSACTIONS_SUCCESS,
- GET_TRANSACTIONS_FAILURE
+ GET_TRANSACTIONS_FAILURE,
+ LATEST_FIVE,
+ ALL_TRANS
 } from './actionTypes';
 
 import { loadData, saveData } from '../localStorage';
@@ -14,7 +16,9 @@ export const initialState = {
  isError: false,
  errMsg: '',
  transactions: loadData('expenseManagerTransactions') || [],
- latestTransactions: []
+ latestTrans: [],
+ allTrans:[],
+  balance: loadData('expenseUser')?.balance || 0
 };
 
 export default (state = initialState, action) => {
@@ -27,12 +31,18 @@ export default (state = initialState, action) => {
    };
   case POST_TRANSACTION_SUCCESS:
    let transactionData = [...state.transactions, action.payload];
+   console.log(transactionData);
+   console.log(action.payload);
    saveData('expenseManagerTransactions', transactionData);
+   let updatedBal = loadData('expenseUser')
+   updatedBal.balance = action.payload.balance
+   saveData('expenseUser',updatedBal)
    return {
     ...state,
     isLoading: false,
     isError: false,
-    transactions: transactionData
+    transactions: transactionData,
+    balance:action.payload.balance
    };
 
   case POST_TRANSACTION_FAILURE:
@@ -68,6 +78,18 @@ export default (state = initialState, action) => {
     isError: true,
     errMsg: action.payload
    };
+
+   case LATEST_FIVE:
+     return {
+       ...state,
+       latestTrans:action.payload
+     }
+
+     case ALL_TRANS:
+       return {
+         ...state,
+         allTrans:action.payload
+       }
 
   default:
    return state;

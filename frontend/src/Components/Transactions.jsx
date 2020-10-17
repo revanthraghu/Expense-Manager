@@ -1,7 +1,9 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Card, Typography, CardContent, Box } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { getLatest } from "../Transactions/actions";
+
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -21,14 +23,16 @@ const useStyles = makeStyles((theme) => ({
 
 function Transactions() {
   const classes = useStyles();
-  const transactions = useSelector((state) => state.transaction.transactions);
-  let latestTransactions = transactions
-    .filter(
-      (i, index) =>
-        index < transactions.length && index > transactions.length - 6
-    )
-    .reverse();
-  console.log(latestTransactions);
+  const latestTransactions = useSelector((state) => state.transaction.latestTrans);
+  const { userData, login } = useSelector((state) => state.Auth);
+  console.log(latestTransactions)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+     console.log('use effect')
+     dispatch(getLatest(userData._id))
+  }, [])
+  
   return (
     <div>
         
@@ -49,7 +53,7 @@ function Transactions() {
                 <Typography style={{fontWeight:'bold'}}> Amount</Typography>
               </Box>
       </Typography>
-      {transactions &&
+      { latestTransactions &&
         latestTransactions.map((item) => (
 
               <Box className={classes.card}
