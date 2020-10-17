@@ -5,8 +5,8 @@ import { Link, useHistory } from 'react-router-dom';
 import PieChartIcon from '@material-ui/icons/PieChart';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
-import Pagination from '@material-ui/lab/Pagination';
-
+import { ExternalLink } from 'react-external-link';
+import DescriptionIcon from '@material-ui/icons/Description';
 import {
  Table,
  TableBody,
@@ -37,6 +37,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import { logout } from '../Redux/actions';
 import { getAllTransactions } from '../Transactions/actions';
+import Pagination from '@material-ui/lab/Pagination';
 
 const StyledTableCell = withStyles((theme) => ({
  head: {
@@ -151,7 +152,7 @@ const useStyles = makeStyles((theme) => ({
  },
  table: {
   width: '80%',
-  margin: '50px 0 0 10%'
+  margin: '5% 0 0 10%'
  }
 }));
 
@@ -304,6 +305,12 @@ function Ledger() {
         <ListItemText primary={'Report'} />
        </ListItem>
       </Link>
+      <ExternalLink href="https://documenter.getpostman.com/view/11565353/TVRkaoJ7">
+       <ListItem button key={'postmanDocs'}>
+        <DescriptionIcon className={classes.icon} />
+        <ListItemText primary={'Postman Docs'} />
+       </ListItem>
+      </ExternalLink>
      </List>
     </Drawer>
     <main className={classes.content}>
@@ -378,6 +385,77 @@ function Ledger() {
    </div>
   </div>
  );
+}
+{
+ /* <main className={classes.content}>
+     <div className={classes.toolbar} />
+     <Typography variant="h3" style={{ marginBottom: '30px' }}>
+      Ledger
+     </Typography>
+     <Typography variant="h6" style={{ display: 'inline-block' }}>
+      Filter:
+     </Typography>
+     <Select
+      name="category"
+      className={classes.category}
+      value={category}
+      onChange={(e) => setCategory(e.target.value)}
+      style={{ margin: '0 50px 0 15px' }}
+     >
+      <MenuItem value="all">All</MenuItem>
+      <MenuItem value="income">Income</MenuItem>
+      <MenuItem value="expense">Expense</MenuItem>
+     </Select>
+     <Typography variant="h6" style={{ display: 'inline-block' }}>
+      Sort:
+     </Typography>
+     <Select
+      name="sort"
+      value={sort}
+      onChange={(e) => setSort(e.target.value)}
+      style={{ margin: '0 50px 0 15px' }}
+     >
+      <MenuItem value="desc">Latest first</MenuItem>
+      <MenuItem value="asc">Oldest first</MenuItem>
+     </Select>
+     <TableContainer className={classes.table} component={Paper}>
+      <Table aria-label="customized table">
+       <TableHead>
+        <TableRow>
+         <StyledTableCell align="right">Date</StyledTableCell>
+         <StyledTableCell align="right">Transaction</StyledTableCell>
+         <StyledTableCell align="right">Amount</StyledTableCell>
+         <StyledTableCell align="right">Category</StyledTableCell>
+         <StyledTableCell>Description</StyledTableCell>
+        </TableRow>
+       </TableHead>
+       <TableBody>
+        {ledgerTransactions.map((item) => (
+         <StyledTableRow key={item.id}>
+          <StyledTableCell align="right">
+           {new Date(item.date).toLocaleDateString()}
+          </StyledTableCell>
+          <StyledTableCell align="right">
+           {item.transactionType}
+          </StyledTableCell>
+          <StyledTableCell align="right">₹ {item.amount}</StyledTableCell>
+          <StyledTableCell align="right">{item.category}</StyledTableCell>
+          <StyledTableCell component="th" scope="row">
+           {item.description}
+          </StyledTableCell>
+         </StyledTableRow>
+        ))}
+       </TableBody>
+      </Table>
+     </TableContainer>
+     <Pagination
+      count={totalPages}
+      page={page}
+      onChange={handleChangePage}
+      color="primary"
+      style={{ width: 'max-content', margin: '30px auto' }}
+     />
+    </main> */
 }
 
 export default Ledger;

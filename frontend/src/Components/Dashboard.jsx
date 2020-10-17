@@ -4,6 +4,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import PieChartIcon from '@material-ui/icons/PieChart';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import { ExternalLink } from 'react-external-link';
 import {
  Drawer,
  AppBar,
@@ -354,15 +355,13 @@ export default function Dashboard() {
        <ListItemText primary={'Report'} />
       </ListItem>
      </Link>
-     <Link
-      href="https://documenter.getpostman.com/view/11565353/TVRkaoJ7"
-      onClick={preventDefault}
-     >
+
+     <ExternalLink href="https://documenter.getpostman.com/view/11565353/TVRkaoJ7">
       <ListItem button key={'postmanDocs'}>
        <DescriptionIcon className={classes.icon} />
        <ListItemText primary={'Postman Docs'} />
       </ListItem>
-     </Link>
+     </ExternalLink>
     </List>
    </Drawer>
    <main className={classes.content}>
