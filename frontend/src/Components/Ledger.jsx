@@ -1,10 +1,11 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import clsx from 'clsx';
 import { Link, useHistory } from 'react-router-dom';
 import PieChartIcon from '@material-ui/icons/PieChart';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
+import Pagination from '@material-ui/lab/Pagination';
 
 import {
  Table,
@@ -24,7 +25,8 @@ import {
  Select,
  IconButton,
  ListItem,
- ListItemText,MenuItem,
+ ListItemText,
+ MenuItem,
  Button
 } from '@material-ui/core';
 import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
@@ -40,11 +42,11 @@ const StyledTableCell = withStyles((theme) => ({
  head: {
   backgroundColor: theme.palette.common.black,
   color: theme.palette.common.white,
-  textAlign:'center'
+  textAlign: 'center'
  },
  body: {
   fontSize: 14,
-  textAlign:'center'
+  textAlign: 'center'
  }
 }))(TableCell);
 
@@ -54,8 +56,8 @@ const StyledTableRow = withStyles((theme) => ({
    backgroundColor: '#7ed6df'
   },
   '&:nth-of-type(even)': {
-    backgroundColor: '#82ccdd'
-   }
+   backgroundColor: '#82ccdd'
+  }
  }
 }))(TableRow);
 
@@ -145,11 +147,11 @@ const useStyles = makeStyles((theme) => ({
   padding: 6,
   borderRadius: '50%',
   fontSize: 40,
-  border:0
+  border: 0
  },
  table: {
-   width:'80%',
-   margin:'5% 0 0 10%'
+  width: '80%',
+  margin: '50px 0 0 10%'
  }
 }));
 
@@ -170,29 +172,29 @@ function Ledger() {
  const { userData, login } = useSelector((state) => state.Auth);
  const history = useHistory();
 
- useEffect(() => {
-  dispatch((getAllTransactions(userData._id)))
-}, [])
-
-const ledgerTransactions = useSelector(state => state.transaction.allTrans)
-
+ const { allTrans: ledgerTransactions, totalPages } = useSelector(
+  (state) => state.transaction
+ );
 
  const handleLogout = () => {
   dispatch(logout());
   history.push('/login');
  };
 
- const [sort,setSort] = useState('')
+ const [sort, setSort] = useState('desc');
 
- const [category, setCategory] = useState('all')
+ const [category, setCategory] = useState('all');
 
- const handleCategoryFilter = (category) => {
-  setCategory(category)
- }
+ const [page, setPage] = useState(1);
 
- const handleSort = (order) => {
-   setSort(order)
- }
+ useEffect(() => {
+  dispatch(getAllTransactions(userData['_id'], sort, category, page));
+ }, [sort, category]);
+
+ const handleChangePage = (event, newPage) => {
+  setPage(newPage);
+  dispatch(getAllTransactions(userData['_id'], sort, category, newPage));
+ };
 
  return (
   <div>
@@ -306,62 +308,72 @@ const ledgerTransactions = useSelector(state => state.transaction.allTrans)
     </Drawer>
     <main className={classes.content}>
      <div className={classes.toolbar} />
+     <Typography variant="h3" style={{ marginBottom: '30px' }}>
+      Ledger
+     </Typography>
+     <Typography variant="h6" style={{ display: 'inline-block' }}>
+      Filter:
+     </Typography>
      <Select
-          name="category"
-          className={classes.category}
-          value={category}
-          onChange={handleCategoryFilter}
-         >
-          <MenuItem value="Category">Category</MenuItem>
-          <MenuItem value="Salary">Salary</MenuItem>
-          <MenuItem value="Accessories">Accessories</MenuItem>
-          <MenuItem value="Education">Education</MenuItem>
-          <MenuItem value="Food">Food</MenuItem>
-          <MenuItem value="Clothing">Clothing</MenuItem>
-          <MenuItem value="Freelancing">Freelancing</MenuItem>
-          <MenuItem value="Furniture">Furniture</MenuItem>
-          <MenuItem value="Electronics">Electronics</MenuItem>
-          <MenuItem value="Rent">Rent</MenuItem>
-          <MenuItem value="Health">Health</MenuItem>
-          <MenuItem value="Maintenance">Maintenance</MenuItem>
-          <MenuItem value="Living">Living</MenuItem>
-          <MenuItem value="Transportation">Transportation</MenuItem>
-          <MenuItem value="Fees">Fees</MenuItem>
-          <MenuItem value="Business">Business</MenuItem>
-          <MenuItem value="Others">Others</MenuItem>
-         </Select>
-     <Button onClick={() => handleSort('asc')} variant="contained" color="secondary">
-        Ascending
-      </Button>
-      <Button onClick={() => handleSort('desc')} variant="contained" color="secondary">
-        Descending
-      </Button>
+      name="category"
+      className={classes.category}
+      value={category}
+      onChange={(e) => setCategory(e.target.value)}
+      style={{ margin: '0 50px 0 15px' }}
+     >
+      <MenuItem value="all">All</MenuItem>
+      <MenuItem value="income">Income</MenuItem>
+      <MenuItem value="expense">Expense</MenuItem>
+     </Select>
+     <Typography variant="h6" style={{ display: 'inline-block' }}>
+      Sort:
+     </Typography>
+     <Select
+      name="sort"
+      value={sort}
+      onChange={(e) => setSort(e.target.value)}
+      style={{ margin: '0 50px 0 15px' }}
+     >
+      <MenuItem value="desc">Latest first</MenuItem>
+      <MenuItem value="asc">Oldest first</MenuItem>
+     </Select>
      <TableContainer className={classes.table} component={Paper}>
       <Table aria-label="customized table">
        <TableHead>
         <TableRow>
-         <StyledTableCell>Description</StyledTableCell>
-         <StyledTableCell align="right">Category</StyledTableCell>
-         <StyledTableCell align="right">Transaction Type</StyledTableCell>
-         <StyledTableCell align="right">Amount</StyledTableCell>
          <StyledTableCell align="right">Date</StyledTableCell>
+         <StyledTableCell align="right">Transaction</StyledTableCell>
+         <StyledTableCell align="right">Amount</StyledTableCell>
+         <StyledTableCell align="right">Category</StyledTableCell>
+         <StyledTableCell>Description</StyledTableCell>
         </TableRow>
        </TableHead>
        <TableBody>
         {ledgerTransactions.map((item) => (
          <StyledTableRow key={item.id}>
+          <StyledTableCell align="right">
+           {new Date(item.date).toLocaleDateString()}
+          </StyledTableCell>
+          <StyledTableCell align="right">
+           {item.transactionType}
+          </StyledTableCell>
+          <StyledTableCell align="right">₹ {item.amount}</StyledTableCell>
+          <StyledTableCell align="right">{item.category}</StyledTableCell>
           <StyledTableCell component="th" scope="row">
            {item.description}
           </StyledTableCell>
-          <StyledTableCell align="right">{item.category}</StyledTableCell>
-          <StyledTableCell align="right">{item.moneyType}</StyledTableCell>
-          <StyledTableCell align="right">₹ {item.amount}</StyledTableCell>
-          <StyledTableCell align="right">{item.date}</StyledTableCell>
          </StyledTableRow>
         ))}
        </TableBody>
       </Table>
      </TableContainer>
+     <Pagination
+      count={totalPages}
+      page={page}
+      onChange={handleChangePage}
+      color="primary"
+      style={{ width: 'max-content', margin: '30px auto' }}
+     />
     </main>
    </div>
   </div>

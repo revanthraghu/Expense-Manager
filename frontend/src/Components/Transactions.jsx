@@ -6,7 +6,7 @@ import { getLatest } from '../Transactions/actions';
 
 const useStyles = makeStyles((theme) => ({
  card: {
-  marginTop: '3%',
+  marginTop: '30px',
   marginLeft: '30%',
   paddingLeft: '2%',
   color: 'white',
@@ -35,12 +35,8 @@ function Transactions() {
  }, []);
 
  return (
-  <div>
-   <Typography
-    variant="h5"
-    color="secondary"
-    style={{ marginTop: '8%', fontWeight: 'bold' }}
-   >
+  <div style={{ marginTop: '30px' }}>
+   <Typography variant="h5" color="secondary" style={{ fontWeight: 'bold' }}>
     Latest Five Transactions
    </Typography>
    <Typography>

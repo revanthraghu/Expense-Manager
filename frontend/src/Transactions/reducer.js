@@ -17,7 +17,8 @@ export const initialState = {
  errMsg: '',
  transactions: loadData('expenseManagerTransactions') || [],
  latestTrans: [],
- allTrans: []
+ allTrans: [],
+ totalPages: 0
 };
 
 export default (state = initialState, action) => {
@@ -35,6 +36,8 @@ export default (state = initialState, action) => {
    saveData('expenseManagerTransactions', transactionData);
    let updatedBal = loadData('expenseUser');
    updatedBal.balance = action.payload.balance;
+   updatedBal.income = action.payload.income;
+   updatedBal.expenses = action.payload.expenses;
    saveData('expenseUser', updatedBal);
    return {
     ...state,
@@ -86,7 +89,8 @@ export default (state = initialState, action) => {
   case ALL_TRANS:
    return {
     ...state,
-    allTrans: action.payload.transactions
+    allTrans: action.payload.transactions,
+    totalPages: action.payload.totalPages
    };
 
   default:

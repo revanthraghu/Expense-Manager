@@ -225,7 +225,12 @@ export default function Dashboard() {
   setTransactionDetails((state) => ({ ...state, [name]: value }));
  };
 
+ const preventDefault = (e) => e.preventDefault();
+
  const handleSubmit = () => {
+  if (transactionDetails.category === 'Category') {
+   transactionDetails.category = 'Others';
+  }
   let payload = {
    ...transactionDetails,
    user_id: userData['_id'],
@@ -503,7 +508,46 @@ export default function Dashboard() {
       </Button>
      </CardActions>
     </Card>
-    {transactions && <Transactions style={{ marginTop: '5%' }} />}
+    <div
+     style={{
+      marginTop: '40px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
+     }}
+    >
+     <div style={{ margin: '0 50px' }}>
+      <Typography variant="h6">
+       Total Income:
+       <Typography
+        variant="h5"
+        style={{ display: 'inline-block', marginLeft: '12px' }}
+       >
+        {userData.income.toLocaleString('en-IN', {
+         maximumFractionDigits: 2,
+         style: 'currency',
+         currency: 'INR'
+        })}
+       </Typography>
+      </Typography>
+     </div>
+     <div style={{ margin: '0 50px' }}>
+      <Typography variant="h6">
+       Total Expense:
+       <Typography
+        variant="h5"
+        style={{ display: 'inline-block', marginLeft: '12px' }}
+       >
+        {userData.expenses.toLocaleString('en-IN', {
+         maximumFractionDigits: 2,
+         style: 'currency',
+         currency: 'INR'
+        })}
+       </Typography>
+      </Typography>
+     </div>
+    </div>
+    {transactions && <Transactions />}
    </main>
   </div>
  );

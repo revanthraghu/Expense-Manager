@@ -44,10 +44,10 @@ export const getLatest = (id) => (dispatch) => {
   .then((res) => dispatch(saveLatest(res.data)));
 };
 
-export const getAllTransactions = (id) => (dispatch) => {
+export const getAllTransactions = (id, sort, category, page) => (dispatch) => {
  return axios
   .get(
-   `http://localhost:5000/api/transactions?user=${id}&filter=all&sort=desc&page=1`
+   `http://localhost:5000/api/transactions?user=${id}&filter=${category}&sort=${sort}&page=${page}`
   )
   .then((res) => dispatch(saveAllTrans(res.data)));
 };
